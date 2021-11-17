@@ -1,0 +1,54 @@
+<atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}" />
+        <param name="plugin-icon">images/pluginIcon.png</param>
+        <param name="plugin-logo">images/pluginLogo.png</param>
+    </plugin-info>
+
+    <!-- add our i18n resource -->
+    <resource type="i18n" name="i18n" location="shelePlugin"/>
+    
+    <!-- add our web resources -->
+    <web-resource key="shelePlugin-resources" name="shelePlugin Web Resources">
+        <dependency>com.atlassian.auiplugin:ajs</dependency>
+        
+        <resource type="download" name="shelePlugin.css" location="/css/shelePlugin.css"/>
+        <resource type="download" name="shelePlugin.js" location="/js/shelePlugin.js"/>
+        <resource type="download" name="images/" location="/images"/>
+
+        <context>shelePlugin</context>
+    </web-resource>
+    <web-section key="my-section" name="My Item Web Section" i18-name-key="Sheleuniq1.name" location="admin_plugins_menu" weight="110">
+    </web-section>
+    <web-item key="my-web-item"  name ="Button" i18-name-key="my-web-item.name" section="admin_plugins_menu/my-section" weight="10">
+        <description >This simple Button</description>
+        <label key="my-web-item.label"/>
+        <link linkId="my-web-item.linkId">/secure/MyWebWork.jspa</link>
+    </web-item>
+    <webwork1 key="my-webwork" name="My WebWorkAtlas" class="java.lang.Object" roles-required="sysadmin">
+        <description key="my-webwork.description">Simple webwork module</description>
+        <actions>
+            <action name="com.atlassian.shele.shelePlugin.webwork.MywebWork" alias="MywebWorkAction" roles-required="sysadmin">
+                <view name="redirect">/template.webwork/success.vm</view>
+            </action>
+        </actions>
+    </webwork1>
+
+    <ao key="ao-module">
+        <description>The module configuring the Active Objects service</description>
+        <entity>com.atlassian.shele.shelePlugin.ao.IssueEntity</entity>
+    </ao>
+
+  <listener  key="IssueEvent" class="com.atlassian.shele.shelePlugin.liseners.IssueEventLisener">
+        <description>Will listen issue events</description>
+    </listener>
+  <!--  <servlet name="Add Servlet" class="com.atlassian.shele.shelePlugin.ao.IssueServlet" key="issue-todo">
+        <description>A servlet to add and list todos</description>
+        <url-pattern>/issue/todo</url-pattern>
+    </servlet>
+    <rest key="IssueRest" path="/rest-issue" version="1.0">
+        <description>Provides hello world services.</description>
+    </rest>-->
+</atlassian-plugin>
