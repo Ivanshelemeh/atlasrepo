@@ -20,18 +20,18 @@
 
         <context>shelePlugin</context>
     </web-resource>
-    <web-section key="my-section" name="My Item Web Section" i18-name-key="Sheleuniq1.name" location="admin_plugins_menu" weight="110">
+    <web-section key="my-section" name="My Item Web Section" i18-name-key="Sheleuniq1.name" location="" weight="110">
     </web-section>
-    <web-item key="my-web-item"  name ="Button" i18-name-key="my-web-item.name" section="admin_plugins_menu/my-section" weight="10">
+    <web-item key="my-web-item"  name ="Button" i18-name-key="my-web-item.name" section="jira.project.sidebar.navigation" weight="10">
         <description >This simple Button</description>
         <label key="my-web-item.label"/>
-        <link linkId="my-web-item.linkId">/secure/MyWebWork.jspa</link>
+        <link linkId="my-web-item.linkId">/secure/MyWebWorkAction.jspa</link>
     </web-item>
     <webwork1 key="my-webwork" name="My WebWorkAtlas" class="java.lang.Object" roles-required="sysadmin">
         <description key="my-webwork.description">Simple webwork module</description>
         <actions>
-            <action name="com.atlassian.shele.shelePlugin.webwork.MywebWork" alias="MywebWorkAction" roles-required="sysadmin">
-                <view name="redirect">/template.webwork/success.vm</view>
+            <action name="com.atlassian.shele.shelePlugin.webwork.MywebWorkAction" alias="MywebWorkAction" roles-required="sysadmin">
+                <view name="success">/template.webwork/success.vm</view>
             </action>
         </actions>
     </webwork1>
