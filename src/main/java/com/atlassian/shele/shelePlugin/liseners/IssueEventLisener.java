@@ -40,19 +40,7 @@ public class IssueEventLisener  implements InitializingBean, DisposableBean {
     @EventListener
     public void onIssueEvent( IssueEvent event)throws Exception{
 
-        this.logger.error(event.toString());
-        String oldChage="";
-        List<GenericValue> genericValues = event.getChangeLog().getRelated("Childs");
-        for (GenericValue genericValue: genericValues){
-            if (event.getIssue().equals(genericValue.get("issue"))){
-                oldChage=genericValue.getString(event.getComment().getBody());
-                break;
-            }
-        }
 
-        String finalOldChage = oldChage;
-     //   Issue newEvent = (Issue) historyManager.getChangeHistories(event.getIssue())
-       //                 .stream()
          //                       .findAny()
            //                             .orElse(historyManager.getChangeHistoryById(event.getEventTypeId()));
         activeObjects.executeInTransaction(new TransactionCallback<IssueEntity>() {
@@ -68,7 +56,7 @@ public class IssueEventLisener  implements InitializingBean, DisposableBean {
             entity.setAuthorIssue(String.valueOf(event.getUser()));
                 entity.setNewField(String.valueOf(historyManager.getAllChangeItems(event.getIssue())));
                 //  String newEvent = String.join(",",arrString);
-                entity.setPrevField(finalOldChage);
+                //entity.setPrevField(finalOldChage);
           //  entity.setNewField(historyManager.getChangeHistories(event.getIssue()));
           //  entity.setPrevField(historyManager.getChangeHistoriesSince(event.getIssue(),new Date(String.valueOf(event.getTime()))));
             entity.save();
