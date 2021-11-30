@@ -3,6 +3,7 @@ package com.atlassian.shele.shelePlugin.ao;
 import com.atlassian.activeobjects.external.ActiveObjects;
 import com.atlassian.sal.api.transaction.TransactionCallback;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServlet;
@@ -12,7 +13,7 @@ import java.io.IOException;
 
 import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
 
-@ComponentScan
+@Component
 public class IssueServlet extends HttpServlet {
 
 

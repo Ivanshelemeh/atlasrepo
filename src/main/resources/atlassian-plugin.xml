@@ -36,9 +36,9 @@
         <description key="my-webwork.description">Simple webwork module</description>
         <actions>
             <action name="com.atlassian.shele.shelePlugin.webwork.MywebWorkAction" alias="MywebWorkAction" roles-required="sysadmin">
-                <view name="success">/template.webwork/success.vm</view>
+                <view name="success">/template/success.vm</view>
                 <action name="com.atlassian.shele.shelePlugin.webwork.SelectAction" alias="SelectAction" roles-required="sysadmin">
-                    <view name="select">/template.webwork/select.vm</view>
+                    <view name="select">/template/select.vm</view>
                 </action>
             </action>
         </actions>

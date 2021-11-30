@@ -1,0 +1,75 @@
+#* @vtlvariable name="action" type="com.atlassian.shele.shelePlugin.webwork.MywebWorkAction" *#
+#set($context=$action.servletContext)
+#set($title="Oh comeon!")
+#set($entity1=$entity.getAuthorIssue)
+#set($AuthorIssue="Avtor!")
+#set($time ="Vremiy sozdaniy")
+#set($fl = "Pole izmeneia")
+#set($ch="New field")
+#set($prev="Previous field")
+#set($prodId="Id Project")
+
+<html>
+<head>
+  <meta name="decorator" content="atl.admin"/>
+  <meta name="admin.active.section" content="jira.project.sidebar.navigation"/>
+  <meta name="admin.active.tab" content="my-web-item"/>
+
+  <title>$title</title>
+</head>
+<body>
+<table class="aui">
+  <thead name ="Dbraws">
+  <tr>
+    <th>$AuthorIssue</th>
+    <th>$time</th>
+    <th>$fl</th>
+    <th>$ch</th>
+    <th>$prev</th>
+    <th>$prodId</th>
+  </tr>
+  </thead>
+  <tbody>
+    #set($count= 1)
+  <tr>
+    #foreach($entity in $context.getAttribute("entity"))
+      #set($foo=$entity.getAuthorIssue())
+
+      <td><strong>#if($foo)
+                $foo
+            #end</strong></td>
+      #set($bar=$entity.getProjectId())
+
+      <td align="center"><strong>#if($bar)
+            $bar
+#end</strong></td>
+      #set($field=$entity.getField())
+      <td><strong>#if($field)
+            $field
+#end
+      </strong></td>
+      #set($change=$entity.getNewChange())
+      <td><strong>#if($change)
+            $change
+#end</strong></td>
+      #set($preChange=$entity.getPrevChange())
+      <td><strong>#if($preChange)
+            $preChange
+#end
+      </strong></td>
+      #set($prod=$entity.getProjectId())
+      <td><strong>#if($prod)
+            $prod
+#end</strong></td>
+      #set($count=$count+1)
+
+    #end
+  </tr>
+  </tbody>
+</table>
+<ul id="pagination">
+  <li>Vpered</li>
+  <li>Nazdat</li>
+</ul>
+</body>
+</html>
