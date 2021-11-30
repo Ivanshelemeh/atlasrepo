@@ -8,6 +8,7 @@
 #set($ch="New field")
 #set($prev="Previous field")
 #set($prodId="Id Project")
+#set($workflow="Work flow")
 
 <html>
 <head>
@@ -27,6 +28,7 @@
     <th>$ch</th>
     <th>$prev</th>
     <th>$prodId</th>
+      <th>$workflow</th>
   </tr>
   </thead>
   <tbody>
@@ -61,15 +63,18 @@
       <td><strong>#if($prod)
             $prod
 #end</strong></td>
+        #set($flow=$entity.getWorkFlow())
+        <td><strong>#if($flow)
+            $flow
+        #end
+        </strong></td>
       #set($count=$count+1)
 
     #end
   </tr>
   </tbody>
 </table>
-<ul id="pagination">
-  <li>Vpered</li>
-  <li>Nazdat</li>
+
 </ul>
 </body>
 </html>

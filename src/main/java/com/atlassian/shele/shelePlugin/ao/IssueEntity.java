@@ -1,10 +1,11 @@
 package com.atlassian.shele.shelePlugin.ao;
 
 import com.atlassian.jira.issue.Issue;
-import net.java.ao.*;
-import net.java.ao.schema.*;
+import net.java.ao.Entity;
+import net.java.ao.schema.Default;
+import net.java.ao.schema.StringLength;
+import net.java.ao.schema.Table;
 
-import java.util.Collection;
 import java.util.Date;
 
 @Table("ISSUE_MUTATOR")
@@ -37,5 +38,10 @@ public interface IssueEntity extends Entity {
 
     String prevField();
    void setPrevField(String prevField);
+
+
+    @StringLength(StringLength.UNLIMITED)
+    String getWorkFlow();
+    void setWorkFlow(String workFlow );
 
 }

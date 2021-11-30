@@ -30,7 +30,7 @@
     <web-item key="my-next-item" name="LeadButton" i18-name-key="my-next-item.name" section="admin_plugins_menu/my-section" weight="20">
         <description>Lead Button</description>
         <label key="my-next-item.name"/>
-        <link linkId="my-next-item-link">/secure/admin/SelectAction.jspa</link>
+        <link linkId="my-next-item-link">/secure/SelectAction.jspa</link>
     </web-item>
     <webwork1 key="my-webwork" name="My WebWorkAtlas" class="java.lang.Object" roles-required="sysadmin">
         <description key="my-webwork.description">Simple webwork module</description>

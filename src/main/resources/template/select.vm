@@ -1,0 +1,49 @@
+#* @vtlvariable name="action" type="com.atlassian.shele.shelePlugin.webwork.SelectAction" *#
+#set($ft = "Вилкой в глаз  или ")
+#set($sc="Jira класс?")
+#set($title="Okay bro!")
+#set($context=$action.servletContext)
+<html>
+<head>
+  <meta name="decorator" content="atl.admin"/>
+  <meta name="admin.active.section" content="admin_plugins_menu/my-section"/>
+  <meta name="admin.active.tab" content="my-next-item"/>
+  <script src="https://connect-cdn.atl-paas.net/all.js"></script>
+  <title>$title</title>
+</head>
+<body>
+<form class="aui">
+  <select class="multi-select" size="4" multiple="multiple" id="select2-example" multiple>
+    <label>Projects</label>
+    #set($pr=$context.getAttribute("prod"))
+    <option value=$values>#if($pr)
+            $pr
+#end</option>
+    <option value="Other">Other Project</option>
+
+  </select>
+</form>
+<form class="aui">
+  <div>
+    <label>IssueEvent</label>
+    <select class="multi-select" size="4" multiple="multiple" id="event" name="issue-example">
+      <option>Issue created</option>
+      <option>Issue updated</option>
+      <option>Issue Done</option>
+      <option>Issue Close</option>
+    </select>
+  </div>
+  <div class="bt-example">
+    <button class="aui-button aui-button-primary" id="showAction" class="text-left" style="display: block; margin-right: auto;">$ft</button>
+  </div>
+</form>
+<script>
+  AJS.$('#showAction').on('click', function(){
+    alert('OR JIRA CLASS?');
+  });
+</script>
+<script>
+  AJS.$("#select2-example").auiSelect2();
+</script>
+</body>
+</html>
