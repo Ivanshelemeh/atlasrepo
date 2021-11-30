@@ -8,16 +8,12 @@ import com.atlassian.jira.web.action.JiraWebActionSupport;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.sal.api.user.UserManager;
 import com.atlassian.shele.shelePlugin.ao.IssueDTO;
-import com.atlassian.shele.shelePlugin.ao.IssueEntity;
-import com.atlassian.shele.shelePlugin.ao.MapIssueMapper;
-import net.java.ao.Query;
+import com.atlassian.shele.shelePlugin.ao.IssueDTOPersistLayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MywebWorkAction extends JiraWebActionSupport {
     private final static String SUCCESS_LOAD= "success";
@@ -26,15 +22,15 @@ public class MywebWorkAction extends JiraWebActionSupport {
     private final UserManager userManager;
     private final JiraAuthenticationContext context;
     private final ActiveObjects objects;
-    private final MapIssueMapper mapper;
+    private final IssueDTOPersistLayer dtoPersistLayer;
 
     @Autowired
     public MywebWorkAction(@ComponentImport UserManager userManager, @ComponentImport JiraAuthenticationContext context,@ComponentImport ActiveObjects objects,
-                            MapIssueMapper mapper) {
+                            IssueDTOPersistLayer dtoPersistLayer) {
         this.context=context;
         this.userManager=userManager;
         this.objects = objects;
-        this.mapper =mapper;
+        this.dtoPersistLayer=dtoPersistLayer;
     }
 
     @Override
@@ -42,8 +38,8 @@ public class MywebWorkAction extends JiraWebActionSupport {
         ApplicationUser leadObject = ComponentAccessor.getProjectManager().getProjectObjByKeyIgnoreCase("KUDO").getProjectLead();
         if (leadObject.getKey().equals(context.getLoggedInUser().getKey())) {
 
-            IssueEntity [] ent= this.objects.find(IssueEntity.class,Query.select().limit(1));
-            List<IssueDTO> entity= Arrays.stream(ent).map(mapper::toIssueDTO).collect(Collectors.toList());
+
+            List<IssueDTO> entity= dtoPersistLayer.getDTO();
             this.getServletContext().setAttribute("entity", entity);
             return SUCCESS_LOAD;
         } else {

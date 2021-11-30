@@ -1,0 +1,11 @@
+
+b
+java:S1124"EReorder the modifiers to comply with the Java Language Specification.(¸°Éõ8Ş¸ÊşÖ/
+]	java:S125"<This block of commented-out lines of code should be removed.(ì€è‹ıÿÿÿÿ8ñ¸ÊşÖ/
+G
+java:S1068"*Remove this unused "logger" private field.(ÖƒûÆ8ø¸ÊşÖ/
+M
+java:S1068"+Remove this unused "objects" private field.(Úõ¶Ëÿÿÿÿÿ8ø¸ÊşÖ/
+{	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ĞßÙèûÿÿÿÿ8û¸ÊşÖ/
+Y
+java:S3655&"7Call "Optional#isPresent()" before accessing the value.(ğÇ—úÿÿÿÿ8’¹ÊşÖ/
