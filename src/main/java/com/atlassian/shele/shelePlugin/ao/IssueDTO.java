@@ -17,5 +17,6 @@ public class IssueDTO {
     private Date createdTime;
     private String newChange;
     private String prevChange;
+    private String workFlow;
 
 }

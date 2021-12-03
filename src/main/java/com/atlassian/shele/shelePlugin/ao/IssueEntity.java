@@ -2,7 +2,6 @@ package com.atlassian.shele.shelePlugin.ao;
 
 import com.atlassian.jira.issue.Issue;
 import net.java.ao.Entity;
-import net.java.ao.schema.Default;
 import net.java.ao.schema.StringLength;
 import net.java.ao.schema.Table;
 
@@ -20,10 +19,8 @@ public interface IssueEntity extends Entity {
 
 
     Integer getIssueId();
-
     void  setIssueId(Integer issueId);
 
-    @Default("default")
     Issue getField();
     void setField(String field);
 

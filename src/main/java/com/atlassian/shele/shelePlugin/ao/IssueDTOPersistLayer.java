@@ -20,7 +20,7 @@ public class IssueDTOPersistLayer {
     @Autowired
     public IssueDTOPersistLayer(@ComponentImport ActiveObjects activeObjects, MapIssueMapper mapper) {
         this.activeObjects = checkNotNull(activeObjects);
-        this.mapper=mapper;
+        this.mapper= mapper;
     }
     public List<IssueDTO> getDTO(){
         IssueEntity[] entities=this.activeObjects.find(IssueEntity.class, Query.select().limit(1));

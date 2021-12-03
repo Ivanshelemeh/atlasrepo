@@ -34,10 +34,13 @@ public class SelectAction extends JiraWebActionSupport {
     @Override
     @RequiresXsrfCheck
     public String execute() throws Exception {
-        List<Project> projectList= projectManager.getProjects();
-        Object values = projectList.stream().filter(project -> project.getKey()!=null).findFirst().get();
+        List<Project> pro= projectManager.getProjects();
+        Object prod =pro.get(0);
+        Object val=  pro.get(1);
+        // Object values = projectList.stream().filter(project -> project.getKey()!=null).findFirst().get();
 
-        this.getServletContext().setAttribute("prod",values);
+        this.getServletContext().setAttribute("prod",prod);
+        this.getServletContext().setAttribute("val",val);
         return SELECT_LOAD;
 
     }

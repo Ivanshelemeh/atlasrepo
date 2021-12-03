@@ -19,8 +19,10 @@
     <option value=$values>#if($pr)
             $pr
 #end</option>
-    <option value="Other">Other Project</option>
-
+    #set($val=$context.getAttribute("val"))
+    <option value=$val>#if($val)
+    $val
+#end
   </select>
 </form>
 <form class="aui">

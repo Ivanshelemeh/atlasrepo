@@ -35,7 +35,7 @@ public class MywebWorkAction extends JiraWebActionSupport {
 
     @Override
     public String execute() throws Exception{
-        ApplicationUser leadObject = ComponentAccessor.getProjectManager().getProjectObjByKeyIgnoreCase("KUDO").getProjectLead();
+        ApplicationUser leadObject = ComponentAccessor.getProjectManager().getProjectObjByKeyIgnoreCase("KU").getProjectLead();
         if (leadObject.getKey().equals(context.getLoggedInUser().getKey())) {
 
 
