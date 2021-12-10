@@ -15,8 +15,9 @@ public class IssueDTO {
     private Integer issueId;
     private String field;
     private Date createdTime;
-    private String newChange;
-    private String prevChange;
+    private String newField;
+    private String prevField;
     private String workFlow;
+    private Long event;
 
 }

@@ -23,7 +23,7 @@ public class IssueDTOPersistLayer {
         this.mapper= mapper;
     }
     public List<IssueDTO> getDTO(){
-        IssueEntity[] entities=this.activeObjects.find(IssueEntity.class, Query.select().limit(1));
+        IssueEntity[] entities=this.activeObjects.find(IssueEntity.class, Query.select());
         return Arrays.stream(entities).map(mapper::toIssueDTO).collect(Collectors.toList());
     }
 }

@@ -1,6 +1,5 @@
 package com.atlassian.shele.shelePlugin.webwork;
 
-import com.atlassian.activeobjects.external.ActiveObjects;
 import com.atlassian.jira.project.Project;
 import com.atlassian.jira.project.ProjectManager;
 import com.atlassian.jira.security.xsrf.RequiresXsrfCheck;
@@ -15,13 +14,12 @@ import java.util.List;
 
 public class SelectAction extends JiraWebActionSupport {
     private final static String SELECT_LOAD = "select";
+    private final static String SELECT_ERROR ="error1";
     private static final Logger logger = LoggerFactory.getLogger(SelectAction.class);
-    private final ActiveObjects objects;
     private final ProjectManager projectManager;
 
     @Inject
-    public SelectAction(@ComponentImport ActiveObjects objects, @ComponentImport ProjectManager projectManager) {
-        this.objects = objects;
+    public SelectAction( @ComponentImport ProjectManager projectManager) {
         this.projectManager = projectManager;
     }
     //   public String filterProject(){
@@ -35,14 +33,14 @@ public class SelectAction extends JiraWebActionSupport {
     @RequiresXsrfCheck
     public String execute() throws Exception {
         List<Project> pro= projectManager.getProjects();
-        Object prod =pro.get(0);
-        Object val=  pro.get(1);
-        // Object values = projectList.stream().filter(project -> project.getKey()!=null).findFirst().get();
-
-        this.getServletContext().setAttribute("prod",prod);
-        this.getServletContext().setAttribute("val",val);
-        return SELECT_LOAD;
-
+        if (!pro.isEmpty()) {
+            Object prod = pro.get(0);
+            // Object values = projectList.stream().filter(project -> project.getKey()!=null).findFirst().get();
+            this.getServletContext().setAttribute("prod", prod);
+            return SELECT_LOAD;
+        }else{
+            return SELECT_ERROR;
+        }
     }
 
 }

@@ -6,18 +6,16 @@ import com.atlassian.event.api.EventPublisher;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.event.issue.IssueEvent;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
-import com.atlassian.sal.api.transaction.TransactionCallback;
 import com.atlassian.shele.shelePlugin.ao.IssueEntity;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.InitializingBean;
+import org.ofbiz.core.entity.GenericValue;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 import java.util.List;
 
 @Component
-public class IssueEventLisener  implements InitializingBean, DisposableBean {
+public class IssueEventLisener  {
 
     private final Logger logger = Logger.getLogger(this.getClass());
     //@JiraImport
@@ -35,33 +33,26 @@ public class IssueEventLisener  implements InitializingBean, DisposableBean {
     @EventListener
     public void onIssueEvent( IssueEvent event)throws Exception{
 
-        activeObjects.executeInTransaction(new TransactionCallback<IssueEntity>() {
-            @Override
-            public IssueEntity doInTransaction() {
+
                 IssueEntity issueEntity = activeObjects.create(IssueEntity.class);
+                issueEntity.setAuthorIssue(event.getIssue().getCreator().getName());
                 issueEntity.setCreatedTime(event.getTime());
                 issueEntity.setIssueId(Math.toIntExact(event.getIssue().getId()));
                 issueEntity.setField(event.getIssue().getIssueType().getName());
-                issueEntity.setNewField(event.getChangeLog().modelEntity.getAllFieldNames().get(0));
-                List<String> stringList = event.getChangeLog().modelEntity.getAllFieldNames();
-                String lt = stringList.get(stringList.size()-2);
-                issueEntity.setPrevField(lt);
-                issueEntity.setNewField(ComponentAccessor.getCommentManager().getLastComment(event.getIssue()).getBody());
+                issueEntity.setProjectId(Math.toIntExact(event.getProject().getId()));
+                List<GenericValue> list = event.getChangeLog().getRelated("ChildChangeItem");
+                   for (GenericValue value :list) {
+                       issueEntity.setNewField(String.valueOf(value.get("newstring")));
+                       issueEntity.setPrevField(String.valueOf(value.get("oldstring")));
+                   }
                 issueEntity.setWorkFlow(String.valueOf(ComponentAccessor.getWorkflowManager().getWorkflow(event.getIssue()).getDisplayName()));
+                issueEntity.setEvent(event.getEventTypeId());
                 issueEntity.save();
-                return issueEntity;
-        }
 
-        });
+
+
+
     }
 
-   @Override
-    public void destroy() throws Exception {
-        this.publisher.unregister(this);
-    }
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        this.publisher.register(this);
-    }
 }

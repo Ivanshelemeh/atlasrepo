@@ -1,6 +1,5 @@
 package com.atlassian.shele.shelePlugin.ao;
 
-import com.atlassian.jira.issue.Issue;
 import net.java.ao.Entity;
 import net.java.ao.schema.StringLength;
 import net.java.ao.schema.Table;
@@ -21,7 +20,7 @@ public interface IssueEntity extends Entity {
     Integer getIssueId();
     void  setIssueId(Integer issueId);
 
-    Issue getField();
+    String getField();
     void setField(String field);
 
 
@@ -33,12 +32,15 @@ public interface IssueEntity extends Entity {
     void  setNewField(String newField);
 
 
-    String prevField();
+    String getPrevField();
    void setPrevField(String prevField);
 
 
     @StringLength(StringLength.UNLIMITED)
     String getWorkFlow();
     void setWorkFlow(String workFlow );
+
+    Long getEvent();
+    void setEvent(Long event);
 
 }

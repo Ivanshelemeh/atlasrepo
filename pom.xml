@@ -282,6 +282,8 @@
     </build>
 
     <properties>
+        <java.version>11</java.version>
+        <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
         <atlassian.spring.scanner.version>2.1.7</atlassian.spring.scanner.version>
         <jira.version>8.20.1</jira.version>
         <amps.version>8.1.2</amps.version>

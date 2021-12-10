@@ -37,8 +37,6 @@ public class MywebWorkAction extends JiraWebActionSupport {
     public String execute() throws Exception{
         ApplicationUser leadObject = ComponentAccessor.getProjectManager().getProjectObjByKeyIgnoreCase("KU").getProjectLead();
         if (leadObject.getKey().equals(context.getLoggedInUser().getKey())) {
-
-
             List<IssueDTO> entity= dtoPersistLayer.getDTO();
             this.getServletContext().setAttribute("entity", entity);
             return SUCCESS_LOAD;

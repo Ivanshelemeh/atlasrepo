@@ -1,5 +1,5 @@
 #* @vtlvariable name="action" type="com.atlassian.shele.shelePlugin.webwork.SelectAction" *#
-#set($ft = "Вилкой в глаз  или ")
+#set($ft = "Jira Loads ")
 #set($sc="Jira класс?")
 #set($title="Okay bro!")
 #set($context=$action.servletContext)
@@ -12,23 +12,17 @@
   <title>$title</title>
 </head>
 <body>
-<form class="aui">
-  <select class="multi-select" size="4" multiple="multiple" id="select2-example" multiple>
+<form class="aui" action="http://localhost:2990/jira/rest/rest-issue/1.0/api/issue" method="post" id="form-1">
+  <select class="multi-select" size="4" multiple="multiple" id="select2-example" multiple id="sel">
     <label>Projects</label>
     #set($pr=$context.getAttribute("prod"))
     <option value=$values>#if($pr)
             $pr
 #end</option>
-    #set($val=$context.getAttribute("val"))
-    <option value=$val>#if($val)
-    $val
-#end
   </select>
-</form>
-<form class="aui">
   <div>
     <label>IssueEvent</label>
-    <select class="multi-select" size="4" multiple="multiple" id="event" name="issue-example">
+    <select class="multi-select" size="4" multiple="multiple" id="event" name="issue-example"id="sel2">
       <option>Issue created</option>
       <option>Issue updated</option>
       <option>Issue Done</option>
@@ -39,13 +33,39 @@
     <button class="aui-button aui-button-primary" id="showAction" class="text-left" style="display: block; margin-right: auto;">$ft</button>
   </div>
 </form>
-<script>
-  AJS.$('#showAction').on('click', function(){
-    alert('OR JIRA CLASS?');
+<script type="text/javascript">
+  AJS.toInit(function (){
+  AJS.$('#form-1').submit(function (event) {
+    event.preventDefault();
+
+    var a = {
+      project: AJS.$("#sel").val(),
+      issueStatus:AJS.$("#sel2").val()
+    }
+    console.log(a);
+
+    jQuery.ajax({
+      type: "POST",
+      data: JSON.stringify(a),
+      url: "http://localhost:2990/jira/rest/rest-issue/1.0/api/issue",
+      headers: { 'X-Atlassian-Token': 'nocheck'},
+      dataType :"json",
+      contentType:"application/json;charset=utf-8",
+        success: function (){
+          alert('Data success have been loaded success')
+        }
+
+    }).done(function () {
+      AJS.$('#form-1').trigger('reset');
+
+
+    });
+  });
+
   });
 </script>
-<script>
-  AJS.$("#select2-example").auiSelect2();
+<script type="text/javascript">
+  AJS.$('#select2-example').auiSelect2();
 </script>
 </body>
 </html>

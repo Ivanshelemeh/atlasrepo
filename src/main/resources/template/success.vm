@@ -2,79 +2,77 @@
 #set($context=$action.servletContext)
 #set($title="Oh comeon!")
 #set($entity1=$entity.getAuthorIssue)
-#set($AuthorIssue="Avtor!")
-#set($time ="Vremiy sozdaniy")
-#set($fl = "Pole izmeneia")
-#set($ch="New field")
-#set($prev="Previous field")
+#set($AuthorIssue="Author Issue")
+#set($time ="Time creation")
+#set($fl = "List of fields")
+#set($ch="New Field")
+#set($prev="Previous Field")
 #set($prodId="Id Project")
 #set($workflow="Work flow")
 
 <html>
 <head>
-  <meta name="decorator" content="atl.admin"/>
-  <meta name="admin.active.section" content="jira.project.sidebar.navigation"/>
-  <meta name="admin.active.tab" content="my-web-item"/>
+    <meta name="decorator" content="atl.admin"/>
+    <meta name="admin.active.section" content="jira.project.sidebar.navigation"/>
+    <meta name="admin.active.tab" content="my-web-item"/>
 
-  <title>$title</title>
+    <title>$title</title>
 </head>
 <body>
 <table class="aui">
-  <thead name ="Dbraws">
-  <tr>
-    <th>$AuthorIssue</th>
-    <th>$time</th>
-    <th>$fl</th>
-    <th>$ch</th>
-    <th>$prev</th>
-    <th>$prodId</th>
-      <th>$workflow</th>
-  </tr>
-  </thead>
-  <tbody>
-    #set($count= 1)
-  <tr>
-    #foreach($entity in $context.getAttribute("entity"))
-      #set($foo=$entity.getAuthorIssue())
-
-      <td><strong>#if($foo)
+    <thead name ="Dbraws">
+    <tr>
+        <th>$AuthorIssue</th>
+        <th>$time</th>
+        <th>$fl</th>
+        <th>$ch</th>
+        <th>$prev</th>
+        <th>$prodId</th>
+        <th>$workflow</th>
+        <th>Event</th>
+    </tr>
+    </thead>
+    <tbody>
+        #foreach($entity in $context.getAttribute("entity"))
+        <tr>
+            #set($foo=$entity.getAuthorIssue())
+            <td><strong>#if($foo)
                 $foo
             #end</strong></td>
-      #set($bar=$entity.getProjectId())
+            #set($bar=$entity.getCreatedTime())
 
-      <td align="center"><strong>#if($bar)
+            <td><strong>#if($bar)
             $bar
 #end</strong></td>
-      #set($field=$entity.getField())
-      <td><strong>#if($field)
+            #set($field=$entity.getField())
+            <td><strong>#if($field)
             $field
-#end
-      </strong></td>
-      #set($change=$entity.getNewChange())
-      <td><strong>#if($change)
+#end</strong></td>
+            #set($change=$entity.getNewField())
+            <td><strong>#if($change)
             $change
 #end</strong></td>
-      #set($preChange=$entity.getPrevChange())
-      <td><strong>#if($preChange)
+            #set($preChange=$entity.getPrevField())
+            <td><strong>#if($preChange)
             $preChange
-#end
-      </strong></td>
-      #set($prod=$entity.getProjectId())
-      <td><strong>#if($prod)
+#end</strong></td>
+            #set($prod=$entity.getProjectId())
+            <td><strong>#if($prod)
             $prod
 #end</strong></td>
-        #set($flow=$entity.getWorkFlow())
-        <td><strong>#if($flow)
+            #set($flow=$entity.getWorkFlow())
+            <td><strong>#if($flow)
             $flow
         #end
-        </strong></td>
-      #set($count=$count+1)
+            </strong></td>
+            #set($ev=$entity.getEvent())
+            <td><strong>#if($ev)
+                    $ev
+                #end</strong></td>
 
-    #end
-  </tr>
-  </tbody>
+        </tr>
+        #end
+    </tbody>
 </table>
-
-</ul>
 </body>
 </html>
