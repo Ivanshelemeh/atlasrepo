@@ -2,9 +2,9 @@ package com.atlassian.shele.shelePlugin.rest;
 
 
 import com.atlassian.activeobjects.external.ActiveObjects;
+import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.project.ProjectManager;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
-import com.atlassian.shele.shelePlugin.ao.IssueDTO;
 import com.atlassian.shele.shelePlugin.ao.IssueDTOPersistLayer;
 import com.atlassian.shele.shelePlugin.ao.ProjectEntity;
 import lombok.extern.slf4j.Slf4j;
@@ -43,8 +43,8 @@ public class RestIssueService {
         public Response.Status submitProject(){
             ProjectEntity projectEntity =activeObjects.create(ProjectEntity.class);
             projectEntity.setProject(String.valueOf(projectManager.getProjects()));
-            Integer status=persistLayer.getDTO().stream().map(IssueDTO::getIssueId).findAny().get();
-            projectEntity.setIssueStatus(String.valueOf(status));
+           // Integer status=persistLayer.getDTO().stream().map(IssueDTO::getIssueId).findAny().get();
+            projectEntity.setIssueStatus(ComponentAccessor.getWorkflowManager().getDefaultWorkflow().getLinkedStatusObjects().get(0).getSimpleStatus().getName());
             projectEntity.save();
             log.info("responce"+ projectEntity);
            return Response.Status.CREATED;

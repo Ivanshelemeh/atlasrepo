@@ -64,8 +64,5 @@
 
   });
 </script>
-<script type="text/javascript">
-  AJS.$('#select2-example').auiSelect2();
-</script>
 </body>
 </html>
