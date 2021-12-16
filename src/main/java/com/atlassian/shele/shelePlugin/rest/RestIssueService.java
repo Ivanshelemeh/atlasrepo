@@ -1,11 +1,9 @@
 package com.atlassian.shele.shelePlugin.rest;
 
 
-import com.atlassian.activeobjects.external.ActiveObjects;
 import com.atlassian.jira.component.ComponentAccessor;
-import com.atlassian.jira.project.ProjectManager;
-import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.shele.shelePlugin.ao.IssueDTOPersistLayer;
+import com.atlassian.shele.shelePlugin.ao.ProjectDTO;
 import com.atlassian.shele.shelePlugin.ao.ProjectEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +15,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
+import java.util.List;
 
 @Path("/api")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -27,26 +24,27 @@ import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
 @Slf4j
 public class RestIssueService {
 
-    private  ActiveObjects activeObjects;
-    private ProjectManager projectManager;
-    private IssueDTOPersistLayer persistLayer;
+    private final IssueDTOPersistLayer persistLayer;
 
     @Autowired
-    public  RestIssueService(@ComponentImport ActiveObjects activeObjects ,@ComponentImport ProjectManager projectManager,IssueDTOPersistLayer persistLayer) {
-        this.activeObjects = checkNotNull(activeObjects);
-        this.projectManager =projectManager;
+    public  RestIssueService(IssueDTOPersistLayer persistLayer) {
         this.persistLayer=persistLayer;
     }
 
         @POST
         @Path("/issue")
-        public Response.Status submitProject(){
-            ProjectEntity projectEntity =activeObjects.create(ProjectEntity.class);
-            projectEntity.setProject(String.valueOf(projectManager.getProjects()));
-           // Integer status=persistLayer.getDTO().stream().map(IssueDTO::getIssueId).findAny().get();
-            projectEntity.setIssueStatus(ComponentAccessor.getWorkflowManager().getDefaultWorkflow().getLinkedStatusObjects().get(0).getSimpleStatus().getName());
-            projectEntity.save();
-            log.info("responce"+ projectEntity);
+        public Response.Status submitProject(ProjectDTO dto){
+            ProjectEntity projectEntity = persistLayer.getEntity();
+            persistLayer.deleteRaws();
+            List<String> list = dto.getProject();
+            List<Long> longs = dto.getEventTypeIds();
+                for(String s : list){
+                    ProjectEntity project =persistLayer.getEntity();
+                    project.setProject(s);
+                    project.setEventTypeId(longs.toString());
+                   project.setIssueStatus(ComponentAccessor.getWorkflowManager().getDefaultWorkflow().getLinkedStatusObjects().get(0).getSimpleStatus().getName());
+                   project.save();
+                }
            return Response.Status.CREATED;
         }
     }

@@ -8,6 +8,6 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ProjectDTO {
-    private String project;
+    private List<String> project;
     private String issueStatus;
 }

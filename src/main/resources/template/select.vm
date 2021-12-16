@@ -1,4 +1,5 @@
 #* @vtlvariable name="action" type="com.atlassian.shele.shelePlugin.webwork.SelectAction" *#
+
 #set($ft = "Jira Loads ")
 #set($sc="Jira класс?")
 #set($title="Okay bro!")
@@ -13,7 +14,7 @@
 </head>
 <body>
 <form class="aui" action="http://localhost:2990/jira/rest/rest-issue/1.0/api/issue" method="post" id="form-1">
-  <select class="multi-select" size="4" multiple="multiple" id="select2-example" multiple id="sel">
+  <select class="multi-select" size="4" multiple="multiple" id="select2-example" multiple >
     <label>Projects</label>
     #set($pr=$context.getAttribute("prod"))
     <option value=$values>#if($pr)
@@ -21,13 +22,17 @@
 #end</option>
   </select>
   <div>
-    <label>IssueEvent</label>
+
     <select class="multi-select" size="4" multiple="multiple" id="event" name="issue-example"id="sel2">
-      <option>Issue created</option>
-      <option>Issue updated</option>
-      <option>Issue Done</option>
-      <option>Issue Close</option>
+      <label>Events</label>
+    #foreach($list in $context.getAttribute("event"))
+      #if($list)
+      <option id="test" value=$list.getId()>$list.getName()
+      </option>
+          #end
+        #end
     </select>
+
   </div>
   <div class="bt-example">
     <button class="aui-button aui-button-primary" id="showAction" class="text-left" style="display: block; margin-right: auto;">$ft</button>
@@ -35,12 +40,31 @@
 </form>
 <script type="text/javascript">
   AJS.toInit(function (){
-  AJS.$('#form-1').submit(function (event) {
+
+
+    AJS.$('#form-1').submit(function (event) {
+    AJS.$('#showAction').hide();
     event.preventDefault();
+    var attr = $('#test').attr('value');
+    console.log(attr);
+    var attr2 = $('#test2').attr('value2');
+    console.log(attr2);
+      var attr3 = $('#test3').attr('value3');
+      var attr4 = $('#test4').attr('value4');
+      let arrs=[attr,attr2,attr3,attr4];
+
+
+
+
+      let sk=$('#select2-example').val();
+
+          var g = $('#event').val();
+
 
     var a = {
-      project: AJS.$("#sel").val(),
-      issueStatus:AJS.$("#sel2").val()
+      project: sk,
+      issueStatus:AJS.$("#sel2").val(),
+      eventTypeIds:g
     }
     console.log(a);
 
@@ -53,10 +77,11 @@
       contentType:"application/json;charset=utf-8",
         success: function (){
           alert('Data success have been loaded success')
+          AJS.$('#showAction').show();
         }
 
     }).done(function () {
-      AJS.$('#form-1').trigger('reset');
+      $('#form-1').trigger('reset');
 
 
     });

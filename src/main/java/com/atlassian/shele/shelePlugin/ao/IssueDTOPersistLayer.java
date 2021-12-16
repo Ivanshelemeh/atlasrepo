@@ -1,6 +1,8 @@
 package com.atlassian.shele.shelePlugin.ao;
 
 import com.atlassian.activeobjects.external.ActiveObjects;
+import com.atlassian.jira.component.ComponentAccessor;
+import com.atlassian.jira.event.type.EventType;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import net.java.ao.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +27,17 @@ public class IssueDTOPersistLayer {
     public List<IssueDTO> getDTO(){
         IssueEntity[] entities=this.activeObjects.find(IssueEntity.class, Query.select());
         return Arrays.stream(entities).map(mapper::toIssueDTO).collect(Collectors.toList());
+    }
+    public ProjectEntity getEntity(){
+        ProjectEntity entity= activeObjects.create(ProjectEntity.class);
+        entity.setProject(String.valueOf(ComponentAccessor.getProjectManager().getProjects()));
+        entity.setEventTypeId(ComponentAccessor.getEventTypeManager().getEventTypes().stream().map(EventType::getId).toString());
+        entity.setIssueStatus(ComponentAccessor.getWorkflowManager().getDefaultWorkflow().toString());
+        entity.save();
+        return entity;
+    }
+    public void deleteRaws(){
+        ProjectEntity [] projectEntities= activeObjects.find(ProjectEntity.class,Query.select("ID,PROJECT, ISSUE_STATUS,EVENT_TYPE_ID"));
+        this.activeObjects.delete(projectEntities);
     }
 }

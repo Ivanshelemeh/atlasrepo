@@ -52,9 +52,8 @@
             <td><strong>#if($change)
             $change
 #end</strong></td>
-            #set($preChange=$entity.getPrevField())
-            <td><strong>#if($preChange)
-            $preChange
+            <td><strong>#if($entity.getPrevField())
+            $entity.getPrevField()
 #end</strong></td>
             #set($prod=$entity.getProjectId())
             <td><strong>#if($prod)
