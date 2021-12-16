@@ -7,7 +7,7 @@ import com.atlassian.jira.web.action.JiraWebActionSupport;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.sal.api.user.UserManager;
 import com.atlassian.shele.shelePlugin.ao.IssueDTO;
-import com.atlassian.shele.shelePlugin.ao.IssueDTOPersistLayer;
+import com.atlassian.shele.shelePlugin.ao.IssueService;
 import com.atlassian.shele.shelePlugin.utilit.Utilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,22 +19,22 @@ public class MywebWorkAction extends JiraWebActionSupport {
     private static final Logger logger= LoggerFactory.getLogger(MywebWorkAction.class);
     private final UserManager userManager;
     private final JiraAuthenticationContext context;
-    private final IssueDTOPersistLayer dtoPersistLayer;
+    private final IssueService issueService;
 
     @Autowired
     public MywebWorkAction(@ComponentImport UserManager userManager, @ComponentImport JiraAuthenticationContext context,
-                            IssueDTOPersistLayer dtoPersistLayer) {
+                          IssueService issueService  ) {
         this.context=context;
         this.userManager=userManager;
-        this.dtoPersistLayer=dtoPersistLayer;
+        this.issueService=issueService;
     }
 
     @Override
     public String execute() throws Exception{
         ApplicationUser leadObject = ComponentAccessor.getProjectManager().getProjectObjByKeyIgnoreCase("KU").getProjectLead();
         if (leadObject.getKey().equals(context.getLoggedInUser().getKey())) {
-            List<IssueDTO> entity= dtoPersistLayer.getDTO();
-            this.getServletContext().setAttribute("entity", entity);
+            List<IssueDTO> entity= issueService.getDTO();
+            this.getServletContext().setAttribute(Utilities.getEnt(), entity);
             return Utilities.getSuccessLoad();
         } else {
             return Utilities.getErrorLoad();

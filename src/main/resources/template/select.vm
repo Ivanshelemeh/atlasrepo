@@ -57,6 +57,8 @@
 
 
       let sk=$('#select2-example').val();
+        if (sk===null)
+          alert('Project not can be empty!!');
 
           var g = $('#event').val();
 

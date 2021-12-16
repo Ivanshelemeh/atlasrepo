@@ -2,9 +2,9 @@ package com.atlassian.shele.shelePlugin.rest;
 
 
 import com.atlassian.jira.component.ComponentAccessor;
-import com.atlassian.shele.shelePlugin.ao.IssueDTOPersistLayer;
 import com.atlassian.shele.shelePlugin.ao.ProjectDTO;
 import com.atlassian.shele.shelePlugin.ao.ProjectEntity;
+import com.atlassian.shele.shelePlugin.ao.ProjectEntityService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,10 +24,10 @@ import java.util.List;
 @Slf4j
 public class RestIssueService {
 
-    private final IssueDTOPersistLayer persistLayer;
+    private final ProjectEntityService persistLayer;
 
     @Autowired
-    public  RestIssueService(IssueDTOPersistLayer persistLayer) {
+    public  RestIssueService(ProjectEntityService persistLayer) {
         this.persistLayer=persistLayer;
     }
 
