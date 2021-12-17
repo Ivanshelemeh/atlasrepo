@@ -38,7 +38,9 @@ public class IssueEventLisener {
     @EventListener
     public void onIssueEvent(IssueEvent event) throws Exception {
         Optional<String> stringOptional = service.stringOptional(event);
-        if (stringOptional.isPresent()) {
+        if (!stringOptional.isPresent()) {
+            return ;
+        }
             List<Long> checkIds = objectMapper.reader().withType(new TypeReference<ArrayList<Long>>() {
 
             }).readValue(stringOptional.get());
@@ -46,7 +48,9 @@ public class IssueEventLisener {
                 service.persistIssueEntity(event);
             }
 
-        }
+
+
+
     }
 }
 
