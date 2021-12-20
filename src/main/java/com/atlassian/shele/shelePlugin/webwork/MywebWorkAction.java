@@ -8,37 +8,47 @@ import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.sal.api.user.UserManager;
 import com.atlassian.shele.shelePlugin.ao.IssueDTO;
 import com.atlassian.shele.shelePlugin.ao.IssueService;
-import com.atlassian.shele.shelePlugin.utilit.Utilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+import static com.atlassian.shele.shelePlugin.utilit.Utilities.*;
+
 public class MywebWorkAction extends JiraWebActionSupport {
-    private static final Logger logger= LoggerFactory.getLogger(MywebWorkAction.class);
+    private static final Logger logger = LoggerFactory.getLogger(MywebWorkAction.class);
     private final UserManager userManager;
     private final JiraAuthenticationContext context;
     private final IssueService issueService;
+    private String selectedItem;
 
-    @Autowired
+
     public MywebWorkAction(@ComponentImport UserManager userManager, @ComponentImport JiraAuthenticationContext context,
-                          IssueService issueService  ) {
-        this.context=context;
-        this.userManager=userManager;
-        this.issueService=issueService;
+                           IssueService issueService) {
+        this.context = context;
+        this.userManager = userManager;
+        this.issueService = issueService;
     }
 
     @Override
-    public String execute() throws Exception{
-        ApplicationUser leadObject = ComponentAccessor.getProjectManager().getProjectObjByKeyIgnoreCase("KU").getProjectLead();
-        if (leadObject.getKey().equals(context.getLoggedInUser().getKey())) {
-            List<IssueDTO> entity= issueService.getDTO();
-            this.getServletContext().setAttribute(Utilities.getEnt(), entity);
-            return Utilities.getSuccessLoad();
+    public String execute() throws Exception {
+        ApplicationUser leadObject = ComponentAccessor.getProjectManager().getProjectObjByKeyIgnoreCase(selectedItem).getProjectLead();
+        if (leadObject != null && leadObject.getKey().equals(context.getLoggedInUser().getKey())) {
+            List<IssueDTO> entity = issueService.getDTO();
+            this.getServletContext().setAttribute(ENT, entity);
+            return SUCCESS_LOAD;
         } else {
-            return Utilities.getErrorLoad();
+            return ERROR_LOAD;
         }
     }
+
+    public String getSelectedItem() {
+        return selectedItem;
+    }
+
+    public void setSelectedItem(String selectedItem) {
+        this.selectedItem = selectedItem;
+    }
+
 
 }

@@ -11,7 +11,6 @@ public interface ProjectEntity extends Entity {
     String getProject();
     void setProject(String project);
 
-
-    String getIssueStatus();
-    void setIssueStatus(String issueStatus);
+    String getEventTypeId();
+    void setEventTypeId(String eventTypeId);
 }

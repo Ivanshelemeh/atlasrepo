@@ -1,8 +1,7 @@
 #* @vtlvariable name="action" type="com.atlassian.shele.shelePlugin.webwork.SelectAction" *#
 
-#set($ft = "Jira Loads ")
-#set($sc="Jira класс?")
-#set($title="Okay bro!")
+
+
 #set($context=$action.servletContext)
 <html>
 <head>
@@ -10,20 +9,23 @@
   <meta name="admin.active.section" content="admin_plugins_menu/my-section"/>
   <meta name="admin.active.tab" content="my-next-item"/>
   <script src="https://connect-cdn.atl-paas.net/all.js"></script>
-  <title>$title</title>
+  <title>Okay bro!</title>
 </head>
 <body>
-<form class="aui" action="http://localhost:2990/jira/rest/rest-issue/1.0/api/issue" method="post" id="form-1">
+<form class="aui" action=$context.getAttribute("url")  method="post" id="form-1">
   <select class="multi-select" size="4" multiple="multiple" id="select2-example" multiple >
     <label>Projects</label>
-    #set($pr=$context.getAttribute("prod"))
-    <option value=$values>#if($pr)
-            $pr
-#end</option>
+      #foreach($pro in $context.getAttribute("prod"))
+          #if($pro)
+          <option id="opt" value=$pro.getId()>
+                $pro.getKey()
+          </option>
+          #end
+      #end
   </select>
   <div>
 
-    <select class="multi-select" size="4" multiple="multiple" id="event" name="issue-example"id="sel2">
+    <select class="multi-select" size="4" multiple="multiple" id="event" name="issue-example">
       <label>Events</label>
     #foreach($list in $context.getAttribute("event"))
       #if($list)
@@ -32,10 +34,9 @@
           #end
         #end
     </select>
-
   </div>
   <div class="bt-example">
-    <button class="aui-button aui-button-primary" id="showAction" class="text-left" style="display: block; margin-right: auto;">$ft</button>
+    <button class="aui-button aui-button-primary" id="showAction" class="text-left" style="display: block; margin-right: auto;">Jira Loads..</button>
   </div>
 </form>
 <script type="text/javascript">
@@ -52,28 +53,28 @@
       var attr3 = $('#test3').attr('value3');
       var attr4 = $('#test4').attr('value4');
       let arrs=[attr,attr2,attr3,attr4];
-
+    var value = $('#form-1').attr('action');
+    var host = value.valueOf();
 
 
 
       let sk=$('#select2-example').val();
         if (sk===null)
-          alert('Project not can be empty!!');
-
+          alert('Project field can not be empty')
+      //  window.location.reload();
           var g = $('#event').val();
 
 
     var a = {
       project: sk,
-      issueStatus:AJS.$("#sel2").val(),
       eventTypeIds:g
     }
     console.log(a);
 
-    jQuery.ajax({
+  var cancel =  jQuery.ajax({
       type: "POST",
       data: JSON.stringify(a),
-      url: "http://localhost:2990/jira/rest/rest-issue/1.0/api/issue",
+      url: host,
       headers: { 'X-Atlassian-Token': 'nocheck'},
       dataType :"json",
       contentType:"application/json;charset=utf-8",
@@ -83,7 +84,7 @@
         }
 
     }).done(function () {
-      $('#form-1').trigger('reset');
+      $('#event').trigger('reset');
 
 
     });

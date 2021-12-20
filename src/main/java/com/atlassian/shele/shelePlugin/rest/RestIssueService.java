@@ -1,12 +1,10 @@
 package com.atlassian.shele.shelePlugin.rest;
 
 
-import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.shele.shelePlugin.ao.ProjectDTO;
 import com.atlassian.shele.shelePlugin.ao.ProjectEntity;
 import com.atlassian.shele.shelePlugin.ao.ProjectEntityService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.Consumes;
@@ -15,7 +13,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
 
 @Path("/api")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -26,28 +23,20 @@ public class RestIssueService {
 
     private final ProjectEntityService persistLayer;
 
-    @Autowired
-    public  RestIssueService(ProjectEntityService persistLayer) {
-        this.persistLayer=persistLayer;
+    public RestIssueService(ProjectEntityService persistLayer) {
+        this.persistLayer = persistLayer;
     }
 
-        @POST
-        @Path("/issue")
-        public Response.Status submitProject(ProjectDTO dto){
-            ProjectEntity projectEntity = persistLayer.getEntity();
-            persistLayer.deleteRaws();
-            List<String> list = dto.getProject();
-            List<Long> longs = dto.getEventTypeIds();
-                for(String s : list){
-                    ProjectEntity project =persistLayer.getEntity();
-                    project.setProject(s);
-                    project.setEventTypeId(longs.toString());
-                   project.setIssueStatus(ComponentAccessor.getWorkflowManager().getDefaultWorkflow().getLinkedStatusObjects().get(0).getSimpleStatus().getName());
-                   project.save();
-                }
-           return Response.Status.CREATED;
-        }
+    @POST
+    @Path("/issue")
+    public Response.Status submitProject(ProjectDTO dto) {
+        persistLayer.deleteEntities();
+        ProjectEntity projectEntity = persistLayer.saveEntity(dto);
+        return Response.Status.CREATED;
+
     }
+}
+
 
 
 

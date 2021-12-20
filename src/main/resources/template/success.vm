@@ -1,35 +1,25 @@
 #* @vtlvariable name="action" type="com.atlassian.shele.shelePlugin.webwork.MywebWorkAction" *#
-#set($context=$action.servletContext)
-#set($title="Oh comeon!")
-#set($entity1=$entity.getAuthorIssue)
-#set($AuthorIssue="Author Issue")
-#set($time ="Time creation")
-#set($fl = "List of fields")
-#set($ch="New Field")
-#set($prev="Previous Field")
-#set($prodId="Id Project")
-#set($workflow="Work flow")
 
+#set($context= $action.servletContext)
 <html>
 <head>
     <meta name="decorator" content="atl.admin"/>
     <meta name="admin.active.section" content="jira.project.sidebar.navigation"/>
     <meta name="admin.active.tab" content="my-web-item"/>
 
-    <title>$title</title>
+    <title>Database stores..</title>
 </head>
 <body>
 <table class="aui">
     <thead name ="Dbraws">
     <tr>
-        <th>$AuthorIssue</th>
-        <th>$time</th>
-        <th>$fl</th>
-        <th>$ch</th>
-        <th>$prev</th>
-        <th>$prodId</th>
-        <th>$workflow</th>
-        <th>Event</th>
+        <th>AuthorIssue</th>
+        <th>Time Creation</th>
+        <th>List of fields</th>
+        <th>New field</th>
+        <th>Previous field</th>
+        <th>Id Project</th>
+        <th>Event id</th>
     </tr>
     </thead>
     <tbody>
@@ -40,7 +30,6 @@
                 $foo
             #end</strong></td>
             #set($bar=$entity.getCreatedTime())
-
             <td><strong>#if($bar)
             $bar
 #end</strong></td>
@@ -59,16 +48,10 @@
             <td><strong>#if($prod)
             $prod
 #end</strong></td>
-            #set($flow=$entity.getWorkFlow())
-            <td><strong>#if($flow)
-            $flow
-        #end
-            </strong></td>
             #set($ev=$entity.getEvent())
             <td><strong>#if($ev)
                     $ev
                 #end</strong></td>
-
         </tr>
         #end
     </tbody>

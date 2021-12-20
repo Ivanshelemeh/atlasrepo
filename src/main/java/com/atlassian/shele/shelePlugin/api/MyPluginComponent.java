@@ -1,6 +1,5 @@
 package com.atlassian.shele.shelePlugin.api;
 
-public interface MyPluginComponent
-{
+public interface MyPluginComponent {
     String getName();
 }

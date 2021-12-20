@@ -1,45 +1,46 @@
 package com.atlassian.shele.shelePlugin.webwork;
 
+import com.atlassian.jira.component.ComponentAccessor;
+import com.atlassian.jira.config.properties.APKeys;
+import com.atlassian.jira.event.type.EventType;
 import com.atlassian.jira.project.Project;
 import com.atlassian.jira.project.ProjectManager;
 import com.atlassian.jira.security.xsrf.RequiresXsrfCheck;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
-import com.atlassian.shele.shelePlugin.utilit.Utilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.atlassian.shele.shelePlugin.utilit.Utilities.*;
 
 
 public class SelectAction extends JiraWebActionSupport {
-    private final static String SELECT_LOAD = "select";
-    private final static String SELECT_ERROR ="error1";
     private static final Logger logger = LoggerFactory.getLogger(SelectAction.class);
     private final ProjectManager projectManager;
 
     @Inject
-    public SelectAction( @ComponentImport ProjectManager projectManager) {
+    public SelectAction(@ComponentImport ProjectManager projectManager) {
         this.projectManager = projectManager;
-    }
-    //   public String filterProject(){
-    //    return projectManager.getProjectObjByName("kudo").getName();
-    //   .stream().map(Project::getKey)
-    //  .collect(Collectors.joining(":"));
-    // }
 
+    }
 
     @Override
     @RequiresXsrfCheck
     public String execute() throws Exception {
-        List<Project> pro= projectManager.getProjects();
-        if (!pro.isEmpty()) {
-            Object prod = pro.get(0);
-            // Object values = projectList.stream().filter(project -> project.getKey()!=null).findFirst().get();
-            this.getServletContext().setAttribute("prod", prod);
+        List<Project> pro = projectManager.getProjects();
+        List<EventType> list = ComponentAccessor.getEventTypeManager().getEventTypes().stream().collect(Collectors.toList());
+        String val = ComponentAccessor.getApplicationProperties().getString(APKeys.JIRA_BASEURL);
+        String url = val + URL_PATH;
+        if (!pro.isEmpty() && !list.isEmpty()) {
+            this.getServletContext().setAttribute(PROD, pro);
+            this.getServletContext().setAttribute(EVENT, list);
+            this.getServletContext().setAttribute("url", url);
             return SELECT_LOAD;
-        }else{
+        } else {
             return SELECT_ERROR;
         }
     }
