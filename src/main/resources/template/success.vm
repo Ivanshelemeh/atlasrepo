@@ -7,19 +7,19 @@
     <meta name="admin.active.section" content="jira.project.sidebar.navigation"/>
     <meta name="admin.active.tab" content="my-web-item"/>
 
-    <title>Database stores..</title>
+    <title>$i18n.getText("my-next-item.name.title.success")</title>
 </head>
 <body>
 <table class="aui">
     <thead name ="Dbraws">
     <tr>
-        <th>AuthorIssue</th>
-        <th>Time Creation</th>
-        <th>List of fields</th>
-        <th>New field</th>
-        <th>Previous field</th>
-        <th>Id Project</th>
-        <th>Event id</th>
+        <th>$i18n.getText("my-web-item.name.authorName")</th>
+        <th>$i18n.getText("my-web-item.name.Time")</th>
+        <th>$i18n.getText("my-web-item.name.fields")</th>
+        <th>$i18n.getText("my-web-item.name.newField")</th>
+        <th>$i18n.getText("my-web-item.name.prevField")</th>
+        <th>$i18n.getText("my-web-item.name.idProject")</th>
+        <th>$i18n.getText("my-web-item.name.idEvent")</th>
     </tr>
     </thead>
     <tbody>

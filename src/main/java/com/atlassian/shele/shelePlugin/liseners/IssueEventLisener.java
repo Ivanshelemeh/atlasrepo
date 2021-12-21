@@ -5,13 +5,11 @@ import com.atlassian.event.api.EventPublisher;
 import com.atlassian.jira.event.issue.IssueEvent;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.shele.shelePlugin.ao.IssueService;
+import com.atlassian.shele.shelePlugin.ao.ProjectMapper;
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -20,14 +18,15 @@ public class IssueEventLisener {
 
     private final Logger logger = Logger.getLogger(this.getClass());
     private final EventPublisher publisher;
-    private final ObjectMapper objectMapper = new ObjectMapper();
     private final IssueService service;
+    private final ProjectMapper projectMapper;
 
 
     @Inject
-    public IssueEventLisener(@ComponentImport EventPublisher publisher, IssueService service) {
+    public IssueEventLisener(@ComponentImport EventPublisher publisher, IssueService service, ProjectMapper projectMapper) {
         this.publisher = publisher;
         this.service = service;
+        this.projectMapper = projectMapper;
     }
 
     @EventListener
@@ -37,8 +36,8 @@ public class IssueEventLisener {
             return;
         }
 
-        List<Long> checkIds = objectMapper.reader().withType(new TypeReference<ArrayList<Long>>() {
-        }).readValue(valueString);
+        List<Long> checkIds = projectMapper.mapToLong(valueString);//objectMapper.reader().withType(new TypeReference<ArrayList<Long>>() {
+        // }).readValue(valueString);
         if (checkIds.contains(event.getEventTypeId())) {
             service.persistIssueEntity(event);
         }

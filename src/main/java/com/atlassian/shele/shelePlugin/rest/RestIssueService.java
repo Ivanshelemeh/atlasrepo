@@ -2,7 +2,6 @@ package com.atlassian.shele.shelePlugin.rest;
 
 
 import com.atlassian.shele.shelePlugin.ao.ProjectDTO;
-import com.atlassian.shele.shelePlugin.ao.ProjectEntity;
 import com.atlassian.shele.shelePlugin.ao.ProjectEntityService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -13,6 +12,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Path("/api")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -29,10 +29,10 @@ public class RestIssueService {
 
     @POST
     @Path("/issue")
-    public Response.Status submitProject(ProjectDTO dto) {
+    public Response submitProject(ProjectDTO dto) {
         persistLayer.deleteEntities();
-        ProjectEntity projectEntity = persistLayer.saveEntity(dto);
-        return Response.Status.CREATED;
+        List<ProjectDTO> projectDTOS=persistLayer.saveEntity(dto);
+        return Response.ok().build();
 
     }
 }

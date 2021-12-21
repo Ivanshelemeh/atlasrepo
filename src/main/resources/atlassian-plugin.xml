@@ -9,6 +9,8 @@
 
     <!-- add our i18n resource -->
     <resource type="i18n" name="i18n" location="shelePlugin"/>
+    <resource type="i18n" name="mess" location="message"/>
+
     
     <!-- add our web resources -->
     <web-resource key="shelePlugin-resources" name="shelePlugin Web Resources">

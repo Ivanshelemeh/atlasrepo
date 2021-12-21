@@ -14,11 +14,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/*
- *Issue service requires to access
+/**
+ * Issue service requires to access
  * in datastore and retrieves data from it
- *
- *
  */
 @Service
 public class IssueService {
@@ -57,6 +55,7 @@ public class IssueService {
         issueEntity.save();
     }
 
+    //string замаппить лист лонгов через маппер
     public String getEventIdsAsString(IssueEvent eventIssue) {
         return Arrays.stream(activeObjects.find(ProjectEntity.class, Query.select().where("PROJECT=?",
                         eventIssue.getProject().getId()))).map(ProjectEntity::getEventTypeId)

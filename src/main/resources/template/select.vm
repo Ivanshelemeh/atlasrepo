@@ -9,10 +9,10 @@
   <meta name="admin.active.section" content="admin_plugins_menu/my-section"/>
   <meta name="admin.active.tab" content="my-next-item"/>
   <script src="https://connect-cdn.atl-paas.net/all.js"></script>
-  <title>Okay bro!</title>
+  <title>$i18n.getText("my-web-item.name.title.loads")</title>
 </head>
 <body>
-<form class="aui" action=$context.getAttribute("url")  method="post" id="form-1">
+<form class="aui" action=$baseurl/rest/rest-issue/1.0/api/issue method="post" id="form-1">
   <select class="multi-select" size="4" multiple="multiple" id="select2-example" multiple >
     <label>Projects</label>
       #foreach($pro in $context.getAttribute("prod"))
@@ -36,13 +36,20 @@
     </select>
   </div>
   <div class="bt-example">
-    <button class="aui-button aui-button-primary" id="showAction" class="text-left" style="display: block; margin-right: auto;">Jira Loads..</button>
+    <button class="aui-button aui-button-primary" id="showAction" class="text-left" style="display: block; margin-right: auto;">$i18n.getText("my-web-item.name.button")</button>
   </div>
 </form>
+<div class="error" id="valid">
+  <ul>
+    <li><span class="aui-icon aui-icon-small aui-iconfont-error aui-icon-notification"></span>Some
+      field has a problem.
+    </li>
+  </ul>
+</div>
 <script type="text/javascript">
   AJS.toInit(function (){
 
-
+    AJS.$('#valid').hide();
     AJS.$('#form-1').submit(function (event) {
     AJS.$('#showAction').hide();
     event.preventDefault();
@@ -60,9 +67,11 @@
 
       let sk=$('#select2-example').val();
         if (sk===null)
-          alert('Project field can not be empty')
+         AJS.$('#valid').show();
       //  window.location.reload();
           var g = $('#event').val();
+            if (g ===null)
+              AJS.$('#valid').show();
 
 
     var a = {
@@ -79,7 +88,6 @@
       dataType :"json",
       contentType:"application/json;charset=utf-8",
         success: function (){
-          alert('Data success have been loaded success')
           AJS.$('#showAction').show();
         }
 

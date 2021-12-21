@@ -34,11 +34,9 @@ public class SelectAction extends JiraWebActionSupport {
         List<Project> pro = projectManager.getProjects();
         List<EventType> list = ComponentAccessor.getEventTypeManager().getEventTypes().stream().collect(Collectors.toList());
         String val = ComponentAccessor.getApplicationProperties().getString(APKeys.JIRA_BASEURL);
-        String url = val + URL_PATH;
         if (!pro.isEmpty() && !list.isEmpty()) {
-            this.getServletContext().setAttribute(PROD, pro);
+            this.getServletContext().setAttribute(PROJECT_NAME, pro);
             this.getServletContext().setAttribute(EVENT, list);
-            this.getServletContext().setAttribute("url", url);
             return SELECT_LOAD;
         } else {
             return SELECT_ERROR;

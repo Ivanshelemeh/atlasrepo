@@ -8,4 +8,6 @@ public interface MapIssueMapper {
     MapIssueMapper INSTANCE = Mappers.getMapper(MapIssueMapper.class);
 
     IssueDTO toIssueDTO(IssueEntity entity);
+
+
 }
