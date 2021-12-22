@@ -22,15 +22,17 @@ public class ProjectEntityService {
 
     public List<ProjectDTO> saveEntity(ProjectDTO dto) {
         List<ProjectEntity> projectEntityList = new ArrayList<>();
-        List<String> list = dto.getProject();
-        List<Long> longs = dto.getEventTypeIds();
-        for (String s : list) {
+        List<String> stringList = dto.getProject();
+        List<Long> longList = dto.getEventTypeIds();
+        String convertString = String.valueOf(longList);
+        stringList.forEach(s -> {
             ProjectEntity entity = activeObjects.create(ProjectEntity.class);
             entity.setProject(s);
-            entity.setEventTypeId(String.valueOf(longs));
+            entity.setEventTypeId(convertString);
             entity.save();
             projectEntityList.add(entity);
-        }
+        });
+
         return mapper.toListDTO(projectEntityList);
 
     }

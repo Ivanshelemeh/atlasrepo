@@ -40,22 +40,24 @@ public class IssueService {
         if (EventType.ISSUE_COMMENTED_ID.equals(event.getEventTypeId())) {
             issueEntity.setNewField(event.getComment().getBody());
             issueEntity.setField("Comment");
+            issueEntity.setEvent(event.getEventTypeId());
         } else if (EventType.ISSUE_COMMENT_EDITED_ID.equals(event.getEventTypeId())) {
             issueEntity.setNewField(event.getComment().getBody());
             issueEntity.setField("Comment edited");
+            issueEntity.setEvent(event.getEventTypeId());
         } else {
-            List<GenericValue> list = event.getChangeLog().getRelated("ChildChangeItem");
-            for (GenericValue value : list) {
-                issueEntity.setField(String.valueOf(value.get("field")));
-                issueEntity.setNewField(String.valueOf(value.get("newstring")));
-                issueEntity.setPrevField(String.valueOf(value.get("oldstring")));
+            List<GenericValue> genericValues = event.getChangeLog().getRelated("ChildChangeItem");
+            genericValues.forEach(genericValue -> {
+                issueEntity.setField(String.valueOf(genericValue.get("field")));
+                issueEntity.setNewField(String.valueOf(genericValue.get("newstring")));
+                issueEntity.setPrevField(String.valueOf(genericValue.get("oldstring")));
                 issueEntity.setEvent(event.getEventTypeId());
-            }
+            });
         }
         issueEntity.save();
     }
 
-    //string замаппить лист лонгов через маппер
+
     public String getEventIdsAsString(IssueEvent eventIssue) {
         return Arrays.stream(activeObjects.find(ProjectEntity.class, Query.select().where("PROJECT=?",
                         eventIssue.getProject().getId()))).map(ProjectEntity::getEventTypeId)
@@ -66,7 +68,7 @@ public class IssueService {
         IssueEntity[] entities = this.activeObjects.find(IssueEntity.class, Query.select());
         return Arrays.stream(entities).map(mapper::toIssueDTO).collect(Collectors.toList());
     }
-
+//TODO May should make this class abstract , then use it as template?
 
 }
 

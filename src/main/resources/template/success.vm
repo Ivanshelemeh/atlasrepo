@@ -11,7 +11,7 @@
 </head>
 <body>
 <table class="aui">
-    <thead name ="Dbraws">
+    <thead name="Dbraws">
     <tr>
         <th>$i18n.getText("my-web-item.name.authorName")</th>
         <th>$i18n.getText("my-web-item.name.Time")</th>

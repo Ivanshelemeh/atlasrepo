@@ -36,8 +36,7 @@ public class IssueEventLisener {
             return;
         }
 
-        List<Long> checkIds = projectMapper.mapToLong(valueString);//objectMapper.reader().withType(new TypeReference<ArrayList<Long>>() {
-        // }).readValue(valueString);
+        List<Long> checkIds = projectMapper.mapToLong(valueString);
         if (checkIds.contains(event.getEventTypeId())) {
             service.persistIssueEntity(event);
         }

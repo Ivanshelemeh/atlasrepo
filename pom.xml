@@ -145,12 +145,18 @@
         <!-- Uncomment to use TestKit in your project. Details at https://bitbucket.org/atlassian/jira-testkit -->
         <!-- You can read more about TestKit at https://developer.atlassian.com/display/JIRADEV/Plugin+Tutorial+-+Smarter+integration+testing+with+TestKit -->
 
-        <dependency>
+      <!--  <dependency>
             <groupId>com.atlassian.jira.tests</groupId>
             <artifactId>jira-testkit-client</artifactId>
             <version>${testkit.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.atlassian.jira</groupId>
+            <artifactId>jira-func-tests</artifactId>
+            <version>${jira.version}</version>
+            <scope>test</scope>
+        </dependency>-->
     </dependencies>
     <build>
         <plugins>
@@ -164,13 +170,13 @@
                     <productDataVersion>${jira.version}</productDataVersion>
                     <!-- Uncomment to install TestKit backdoor in JIRA. -->
 
-                    <pluginArtifacts>
+                  <!--  <pluginArtifacts>
                         <pluginArtifact>
                             <groupId>com.atlassian.jira.tests</groupId>
                             <artifactId>jira-testkit-plugin</artifactId>
                             <version>${testkit.version}</version>
                         </pluginArtifact>
-                    </pluginArtifacts>
+                    </pluginArtifacts> -->
 
                     <enableQuickReload>true</enableQuickReload>
 
@@ -283,7 +289,7 @@
         <!-- This property ensures consistency between the key in atlassian-plugin.xml and the OSGi bundle's key. -->
         <atlassian.plugin.key>${project.groupId}.${project.artifactId}</atlassian.plugin.key>
         <!-- TestKit version 6.x for JIRA 6.x -->
-        <testkit.version>6.3.11</testkit.version>
+        <testkit.version>7.12.3</testkit.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
