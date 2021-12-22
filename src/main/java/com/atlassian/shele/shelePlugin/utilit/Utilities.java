@@ -10,5 +10,4 @@ public final class Utilities {
     public final static String ENT = "entity";
 
 
-
 }

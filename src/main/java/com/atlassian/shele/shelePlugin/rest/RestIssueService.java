@@ -31,8 +31,8 @@ public class RestIssueService {
     @Path("/issue")
     public Response submitProject(ProjectDTO dto) {
         persistLayer.deleteEntities();
-        List<ProjectDTO> projectDTOS=persistLayer.saveEntity(dto);
-        return Response.ok().build();
+        List<ProjectDTO> projectDTOS = persistLayer.saveEntity(dto);
+        return Response.status(Response.Status.CREATED).entity(projectDTOS.toString()).build();
 
     }
 }
