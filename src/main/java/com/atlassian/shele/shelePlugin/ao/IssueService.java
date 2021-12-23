@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
  * Issue service requires to access
  * in datastore and retrieves data from it
  */
+//TODO May should make this class abstract , then use it as template?
 @Service
 public class IssueService {
 
@@ -37,26 +38,23 @@ public class IssueService {
         issueEntity.setCreatedTime(event.getTime());
         issueEntity.setIssueId(Math.toIntExact(event.getIssue().getId()));
         issueEntity.setProjectId(Math.toIntExact(event.getProject().getId()));
+        issueEntity.setEvent(event.getEventTypeId());
         if (EventType.ISSUE_COMMENTED_ID.equals(event.getEventTypeId())) {
             issueEntity.setNewField(event.getComment().getBody());
             issueEntity.setField("Comment");
-            issueEntity.setEvent(event.getEventTypeId());
         } else if (EventType.ISSUE_COMMENT_EDITED_ID.equals(event.getEventTypeId())) {
             issueEntity.setNewField(event.getComment().getBody());
             issueEntity.setField("Comment edited");
-            issueEntity.setEvent(event.getEventTypeId());
         } else {
             List<GenericValue> genericValues = event.getChangeLog().getRelated("ChildChangeItem");
             genericValues.forEach(genericValue -> {
                 issueEntity.setField(String.valueOf(genericValue.get("field")));
                 issueEntity.setNewField(String.valueOf(genericValue.get("newstring")));
                 issueEntity.setPrevField(String.valueOf(genericValue.get("oldstring")));
-                issueEntity.setEvent(event.getEventTypeId());
             });
         }
         issueEntity.save();
     }
-
 
     public String getEventIdsAsString(IssueEvent eventIssue) {
         return Arrays.stream(activeObjects.find(ProjectEntity.class, Query.select().where("PROJECT=?",
@@ -68,7 +66,6 @@ public class IssueService {
         IssueEntity[] entities = this.activeObjects.find(IssueEntity.class, Query.select());
         return Arrays.stream(entities).map(mapper::toIssueDTO).collect(Collectors.toList());
     }
-//TODO May should make this class abstract , then use it as template?
 
 }
 

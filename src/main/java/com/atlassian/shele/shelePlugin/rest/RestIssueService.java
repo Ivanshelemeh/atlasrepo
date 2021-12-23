@@ -33,10 +33,5 @@ public class RestIssueService {
         persistLayer.deleteEntities();
         List<ProjectDTO> projectDTOS = persistLayer.saveEntity(dto);
         return Response.status(Response.Status.CREATED).entity(projectDTOS.toString()).build();
-
     }
 }
-
-
-
-

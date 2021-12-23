@@ -1,10 +1,10 @@
 package com.atlassian.shele.shelePlugin.config;
 
-import com.atlassian.shele.shelePlugin.api.MyPluginComponent;
-import com.atlassian.shele.shelePlugin.impl.MyPluginComponentImpl;
 import com.atlassian.plugins.osgi.javaconfig.configs.beans.ModuleFactoryBean;
 import com.atlassian.plugins.osgi.javaconfig.configs.beans.PluginAccessorBean;
 import com.atlassian.sal.api.ApplicationProperties;
+import com.atlassian.shele.shelePlugin.api.MyPluginComponent;
+import com.atlassian.shele.shelePlugin.impl.MyPluginComponentImpl;
 import org.osgi.framework.ServiceRegistration;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +20,6 @@ import static com.atlassian.plugins.osgi.javaconfig.OsgiServices.importOsgiServi
         PluginAccessorBean.class
 })
 public class MyPluginJavaConfig {
-
 
     // imports ApplicationProperties from OSGi
     @Bean

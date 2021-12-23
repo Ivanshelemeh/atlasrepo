@@ -236,7 +236,7 @@
                             <directory>target</directory>
                             <useDefaultExcludes>true</useDefaultExcludes>
                             <includes>
-                                <include>/*</include>
+                                <include>**/*</include>
                             </includes>
                             <excludes>
                                 <exclude>container</exclude>

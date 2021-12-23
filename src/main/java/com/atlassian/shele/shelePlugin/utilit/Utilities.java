@@ -8,6 +8,4 @@ public final class Utilities {
     public final static String PROJECT_NAME = "prod";
     public final static String EVENT = "event";
     public final static String ENT = "entity";
-
-
 }
