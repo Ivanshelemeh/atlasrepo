@@ -64,25 +64,25 @@
             var attr3 = $('#test3').attr('value3');
             var attr4 = $('#test4').attr('value4');
             let arrs = [attr, attr2, attr3, attr4];
-            let sk = $('#select2-example').val();
-            if (sk === null) {
+            let projects = $('#select2-example').val();
+            if (projects === null) {
                 AJS.$('#valid').show();
                 AJS.$('#notify').hide();
             }
-            let g = $('#event').val();
-            if (g === null) {
+            let events = $('#event').val();
+            if (events === null) {
                 AJS.$('#valid').show();
                 AJS.$('#notify').hide();
             }
 
-            const a = {
-                project: sk,
-                eventTypeIds: g
+            const settings = {
+                project: projects,
+                eventTypeIds: events
             }
 
             const request = jQuery.ajax({
                 type: "POST",
-                data: JSON.stringify(a),
+                data: JSON.stringify(settings),
                 url: AJS.contextPath() + "/rest/rest-issue/1.0/api/issue ",
                 headers: {'X-Atlassian-Token': 'nocheck'},
                 dataType: "json",
@@ -90,14 +90,11 @@
                 statusCode: {
                     201: function () {
                         AJS.$('#notify').show();
-                        if (sk === null || g === null) {
+                        if (projects === null || events === null) {
                             AJS.$('#notify').hide();
                         }
                     }
                 }
-            }).done(function () {
-                AJS.$('#form-1').trigger('reset');
-
             });
         });
     });
