@@ -6,6 +6,11 @@ import lombok.ToString;
 
 import java.util.Date;
 
+/**
+ * It is DTO model for
+ * IssueEntity entity
+ */
+
 @Getter
 @Setter
 @ToString

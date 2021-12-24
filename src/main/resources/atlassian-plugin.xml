@@ -57,7 +57,7 @@
         <entity>com.atlassian.shele.shelePlugin.ao.ProjectEntity</entity>
     </ao>
 
-    <listener key="IssueEvent" class="com.atlassian.shele.shelePlugin.liseners.IssueEventLisener">
+    <listener key="IssueEvent" class="com.atlassian.shele.shelePlugin.liseners.IssueEventListener">
         <description>Will listen issue events</description>
     </listener>
     <rest key="IssueRest" path="/rest-issue" version="1.0">
