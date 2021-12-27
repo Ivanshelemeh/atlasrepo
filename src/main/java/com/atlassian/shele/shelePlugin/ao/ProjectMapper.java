@@ -23,7 +23,7 @@ public interface ProjectMapper {
     default List<String> map(String value) {
         return Collections.singletonList(value);
     }
-    
+
     @Named("myName")
     @SneakyThrows
     default List<Long> mapToLong(String value) {

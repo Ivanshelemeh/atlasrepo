@@ -26,14 +26,13 @@ public class RestIssueTest {
         MockitoAnnotations.initMocks(this);
     }
 
-    //Test have passed but appeared some warnings from mockito
+    //TODO fixed mockito warnings
     @Test
     public void shouldPassed() {
         ProjectDTO projectDTO = new ProjectDTO();
         projectDTO.setProject(ImmutableList.of("project", "new wall"));
         projectDTO.setEventTypeIds(ImmutableList.of(1l, 2L, 3L));
         List<ProjectDTO> projectDTOList = service.saveEntity(projectDTO);
-
         given(service.saveEntity(projectDTO)).willReturn(projectDTOList);
         assertNotNull(projectDTOList);
     }

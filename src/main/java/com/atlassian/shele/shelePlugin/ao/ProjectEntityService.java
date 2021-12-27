@@ -12,6 +12,7 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 public class ProjectEntityService {
+
     private final ActiveObjects activeObjects;
     private final ProjectMapper mapper;
 

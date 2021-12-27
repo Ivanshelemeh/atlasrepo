@@ -15,7 +15,6 @@ public class MyPluginComponentImpl implements MyPluginComponent {
         if (null != applicationProperties) {
             return "myComponent:" + applicationProperties.getDisplayName();
         }
-
         return "myComponent";
     }
 }

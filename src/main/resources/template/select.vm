@@ -51,7 +51,7 @@
     </p>
     <p>$i18n.getText("my-web-item.name.success")</p>
 </div>
-<script type="text/javascript">
+<script>
     AJS.toInit(function () {
 
         AJS.$('#valid').hide();
@@ -59,11 +59,6 @@
         AJS.$('#form-1').submit(function (event) {
             AJS.$('#showAction').hide();
             event.preventDefault();
-            var attr = $('#test').attr('value');
-            var attr2 = $('#test2').attr('value2');
-            var attr3 = $('#test3').attr('value3');
-            var attr4 = $('#test4').attr('value4');
-            let arrs = [attr, attr2, attr3, attr4];
             let projects = $('#select2-example').val();
             if (projects === null) {
                 AJS.$('#valid').show();

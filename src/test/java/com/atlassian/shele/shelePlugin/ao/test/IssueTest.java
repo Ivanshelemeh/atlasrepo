@@ -43,7 +43,7 @@ public class IssueTest {
 
     @Test
     public void testIssue() throws Exception {
-        assertEquals(0, entityManager.find(IssueEntity.class).length);
+        assertEquals(0, ao.find(IssueEntity.class).length);
     }
 
     @Test
@@ -54,6 +54,6 @@ public class IssueTest {
         issueEntity.save();
         IssueDTO dto = mapIssueMapper.toIssueDTO(issueEntity);
         assertEquals(dto.getIssueId(), issueEntity.getIssueId());
-        assertEquals(1, entityManager.find(IssueEntity.class).length);
+        assertEquals(1, ao.find(IssueEntity.class).length);
     }
 }
