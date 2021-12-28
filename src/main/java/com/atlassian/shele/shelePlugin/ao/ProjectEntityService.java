@@ -5,6 +5,7 @@ import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import net.java.ao.Query;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
@@ -21,7 +22,7 @@ public class ProjectEntityService {
         this.mapper = mapper;
     }
 
-    public List<ProjectDTO> saveEntity(ProjectDTO dto) {
+    public List<ProjectDTO> saveEntity(@NotNull ProjectDTO dto) {
         List<String> projectKeys = dto.getProject();
         List<Long> eventTypeIds = dto.getEventTypeIds();
         String convertString = String.valueOf(eventTypeIds);

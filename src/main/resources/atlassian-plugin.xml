@@ -18,7 +18,7 @@
         <resource type="download" name="shelePlugin.css" location="/css/shelePlugin.css"/>
         <resource type="download" name="shelePlugin.js" location="/js/shelePlugin.js"/>
         <resource type="download" name="images/" location="/images"/>
-        <context>shelePlugin</context>
+        <context>atl.admin</context>
     </web-resource>
     <web-section key="my-section" name="My Item Web Section" i18-name-key="Sheleuniq1.name"
                  location="admin_plugins_menu" weight="110">

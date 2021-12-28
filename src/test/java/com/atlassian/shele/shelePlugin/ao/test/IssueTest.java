@@ -7,6 +7,7 @@ import com.atlassian.shele.shelePlugin.ao.IssueDTO;
 import com.atlassian.shele.shelePlugin.ao.IssueEntity;
 import com.atlassian.shele.shelePlugin.ao.MapIssueMapper;
 import net.java.ao.EntityManager;
+import net.java.ao.Query;
 import net.java.ao.test.converters.NameConverters;
 import net.java.ao.test.jdbc.Hsql;
 import net.java.ao.test.jdbc.Jdbc;
@@ -22,9 +23,8 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
 /**
- * Issue entity unit test
+ * Issue entity logic unit test
  */
-
 @RunWith(ActiveObjectsJUnitRunner.class)
 @Jdbc(Hsql.class)
 @NameConverters
@@ -55,5 +55,12 @@ public class IssueTest {
         IssueDTO dto = mapIssueMapper.toIssueDTO(issueEntity);
         assertEquals(dto.getIssueId(), issueEntity.getIssueId());
         assertEquals(1, ao.find(IssueEntity.class).length);
+    }
+
+    @Test
+    public void shouldBe_empty_Entities() {
+        IssueEntity[] issueEntities = ao.find(IssueEntity.class, Query.select());
+        ao.delete(issueEntities);
+        assertEquals(0, ao.find(IssueEntity.class).length);
     }
 }
