@@ -1,5 +1,4 @@
 AJS.toInit(function () {
-    console.log("ddfd");
     AJS.$('#valid').hide();
     AJS.$('#notify').hide();
     AJS.$('#form-1').submit(function (event) {
