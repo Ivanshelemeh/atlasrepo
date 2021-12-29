@@ -5,6 +5,7 @@ import com.atlassian.shele.shelePlugin.api.MyPluginComponent;
 
 
 public class MyPluginComponentImpl implements MyPluginComponent {
+
     private final ApplicationProperties applicationProperties;
 
     public MyPluginComponentImpl(final ApplicationProperties applicationProperties) {
