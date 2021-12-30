@@ -60,6 +60,7 @@
                       class="com.atlassian.shele.shelePlugin.customfield.SimpleCustomField">
         <description key="simple-custom-field.description"/>
         <resource type="velocity" name="edit" location="/template/edit.vm"/>
+        <resource type="velocity" name="view" location="/template/custom.vm"/>
     </customfield-type>
 
     <listener key="IssueEvent" class="com.atlassian.shele.shelePlugin.liseners.IssueEventListener">
