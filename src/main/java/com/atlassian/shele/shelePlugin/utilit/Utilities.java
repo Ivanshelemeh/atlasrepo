@@ -11,5 +11,4 @@ public final class Utilities {
     public final static String EVENT = "event";
     public final static String ENT = "entity";
     public final static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    public final static String ADMIN = "jira-administrators";
 }
