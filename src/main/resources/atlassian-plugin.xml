@@ -56,6 +56,11 @@
         <entity>com.atlassian.shele.shelePlugin.ao.IssueEntity</entity>
         <entity>com.atlassian.shele.shelePlugin.ao.ProjectEntity</entity>
     </ao>
+    <customfield-type key="simple-custom-field" name="Simple custom field" i18n-name-key="simple-custom-field.name"
+                      class="com.atlassian.shele.shelePlugin.customfield.SimpleCustomField">
+        <description key="simple-custom-field.description"/>
+        <resource type="velocity" name="edit" location="/template/edit.vm"/>
+    </customfield-type>
 
     <listener key="IssueEvent" class="com.atlassian.shele.shelePlugin.liseners.IssueEventListener">
         <description>Will listen issue events</description>
