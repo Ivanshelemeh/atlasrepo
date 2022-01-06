@@ -6,6 +6,10 @@ import lombok.ToString;
 
 import java.util.Date;
 
+/**
+ * It is DTO model for
+ * IssueEntity entity
+ */
 @Getter
 @Setter
 @ToString
@@ -18,5 +22,4 @@ public class IssueDTO {
     private String newField;
     private String prevField;
     private Long event;
-
 }

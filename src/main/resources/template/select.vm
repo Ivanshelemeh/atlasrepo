@@ -51,53 +51,5 @@
     </p>
     <p>$i18n.getText("my-web-item.name.success")</p>
 </div>
-<script type="text/javascript">
-    AJS.toInit(function () {
-
-        AJS.$('#valid').hide();
-        AJS.$('#notify').hide();
-        AJS.$('#form-1').submit(function (event) {
-            AJS.$('#showAction').hide();
-            event.preventDefault();
-            var attr = $('#test').attr('value');
-            var attr2 = $('#test2').attr('value2');
-            var attr3 = $('#test3').attr('value3');
-            var attr4 = $('#test4').attr('value4');
-            let arrs = [attr, attr2, attr3, attr4];
-            let projects = $('#select2-example').val();
-            if (projects === null) {
-                AJS.$('#valid').show();
-                AJS.$('#notify').hide();
-            }
-            let events = $('#event').val();
-            if (events === null) {
-                AJS.$('#valid').show();
-                AJS.$('#notify').hide();
-            }
-
-            const settings = {
-                project: projects,
-                eventTypeIds: events
-            }
-
-            const request = jQuery.ajax({
-                type: "POST",
-                data: JSON.stringify(settings),
-                url: AJS.contextPath() + "/rest/rest-issue/1.0/api/issue",
-                headers: {'X-Atlassian-Token': 'nocheck'},
-                dataType: "json",
-                contentType: "application/json;charset=utf-8",
-                statusCode: {
-                    201: function () {
-                        AJS.$('#notify').show();
-                        if (projects === null || events === null) {
-                            AJS.$('#notify').hide();
-                        }
-                    }
-                }
-            });
-        });
-    });
-</script>
 </body>
 </html>

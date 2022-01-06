@@ -13,6 +13,7 @@ import java.util.List;
 import static com.atlassian.shele.shelePlugin.utilit.Utilities.*;
 
 public class MywebWorkAction extends JiraWebActionSupport {
+
     private final JiraAuthenticationContext context;
     private final IssueService issueService;
     private String selectedItem;

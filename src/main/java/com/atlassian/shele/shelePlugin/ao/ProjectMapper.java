@@ -1,7 +1,6 @@
 package com.atlassian.shele.shelePlugin.ao;
 
 import lombok.SneakyThrows;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -11,9 +10,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.atlassian.shele.shelePlugin.utilit.Utilities.OBJECT_MAPPER;
+
 @Mapper(componentModel = "spring")
 public interface ProjectMapper {
-    ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @Mapping(target = "eventTypeIds", source = "eventTypeId", qualifiedByName = "myName")
     ProjectDTO toDTO(ProjectEntity projectEntity);

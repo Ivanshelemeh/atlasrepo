@@ -1,0 +1,17 @@
+#controlHeader ($action $customField.id $customField.name $fieldLayoutItem.required $displayParameters.noHeader)
+#if ($jiraUserUtils.getGroupNamesForUser($authcontext.loggedInUser.name).contains('jira-administrators'))
+<input type="text"
+       name="$customField.id"
+       value="$!value"/>
+#else
+    #if($value && ! $value.equals(" "))
+        #set ($displayValue = ${value})
+    #else
+        #set ($displayValue = 'Access only for admins')
+    #end
+<span title="This field is editable only for administrators">$!displayValue</span>
+<input type="hidden"
+       name="$customField.id"
+       value="$!value"/>
+#end
+#controlFooter ($action $fieldLayoutItem.fieldDescription $displayParameters.noHeader)
