@@ -7,7 +7,6 @@ import com.atlassian.jira.issue.customfields.impl.GenericTextCFType;
 import com.atlassian.jira.issue.customfields.manager.GenericConfigManager;
 import com.atlassian.jira.issue.customfields.persistence.CustomFieldValuePersister;
 import com.atlassian.jira.issue.fields.CustomField;
-import com.atlassian.jira.issue.fields.FieldException;
 import com.atlassian.jira.issue.fields.layout.field.FieldLayoutItem;
 import com.atlassian.jira.issue.history.ChangeItemBean;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
@@ -34,20 +33,20 @@ public class SecondCustomField extends GenericTextCFType {
     @Override
     public Map<String, Object> getVelocityParameters(Issue issue, CustomField field,
                                                      FieldLayoutItem fieldLayoutItem) {
+        Map<String, Object> params = new HashMap<>();
+        String report = issue.getReporter().getKey();
+        params.put("report", report);
+        return params;
+    }
+
+    @Override
+    public String getValueFromIssue(CustomField field, Issue issue) {
         int countAssignee = 0;
         List<ChangeItemBean> itemBeans = ComponentAccessor.getChangeHistoryManager()
                 .getChangeItemsForField(issue, CUST_FIELD);
         int lengthAssignee = itemBeans.size();
-        Map<String, Object> params = new HashMap<>();
         countAssignee = lengthAssignee;
-        String creator = issue.getCreator().getName();
-        String report = issue.getReporter().getName();
-        if (creator.equals(report)) {
-            params.put("assignee", countAssignee);
-            return params;
-        }
-        Exception e = new FieldException();
-        params.put("error", e);
-        return params;
+        String assignee = String.valueOf(countAssignee);
+        return assignee;
     }
 }
