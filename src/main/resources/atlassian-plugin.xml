@@ -65,8 +65,8 @@
     <customfield-type key="second-custom-field" name="Second custom field" i18n-name-key="second-custom-field.name"
     class="com.atlassian.shele.shelePlugin.customfield.SecondCustomField">
             <description key="second-custom-field.description"/>
-    <resource type="velocity" name="edit" location="/template/second.vm"/>
-        <resource type="velocity" name="view" location="/template/valid.vm"/>
+    <resource type="velocity" name="edit" location="/template/second-custom-field/edit.vm"/>
+        <resource type="velocity" name="view" location="/template/second-custom-field/view.vm"/>
     </customfield-type>
     <listener key="IssueEvent" class="com.atlassian.shele.shelePlugin.liseners.IssueEventListener">
         <description>Will listen issue events</description>

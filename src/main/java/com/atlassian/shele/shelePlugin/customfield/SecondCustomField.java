@@ -2,7 +2,6 @@ package com.atlassian.shele.shelePlugin.customfield;
 
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.issue.Issue;
-import com.atlassian.jira.issue.changehistory.ChangeHistoryManager;
 import com.atlassian.jira.issue.customfields.impl.GenericTextCFType;
 import com.atlassian.jira.issue.customfields.manager.GenericConfigManager;
 import com.atlassian.jira.issue.customfields.persistence.CustomFieldValuePersister;
@@ -20,33 +19,27 @@ import static com.atlassian.shele.shelePlugin.utilit.Utilities.CUST_FIELD;
 
 public class SecondCustomField extends GenericTextCFType {
 
-    private final ChangeHistoryManager manager;
-
     public SecondCustomField(@ComponentImport CustomFieldValuePersister customFieldValuePersister,
-                             @ComponentImport GenericConfigManager genericConfigManager,
-                             @ComponentImport ChangeHistoryManager manager) {
+                             @ComponentImport GenericConfigManager genericConfigManager) {
         super(customFieldValuePersister, genericConfigManager);
-        this.manager = manager;
     }
 
     @Nonnull
     @Override
-    public Map<String, Object> getVelocityParameters(Issue issue, CustomField field,
-                                                     FieldLayoutItem fieldLayoutItem) {
+    public Map<String, Object> getVelocityParameters(final Issue issue, final CustomField field,
+                                                     final FieldLayoutItem fieldLayoutItem) {
         Map<String, Object> params = new HashMap<>();
-        String report = issue.getReporter().getKey();
-        params.put("report", report);
+        String reportKey = issue.getReporter().getKey();
+        params.put("reportKey", reportKey);
         return params;
     }
 
     @Override
-    public String getValueFromIssue(CustomField field, Issue issue) {
-        int countAssignee = 0;
+    public String getValueFromIssue(final CustomField field, final Issue issue) {
         List<ChangeItemBean> itemBeans = ComponentAccessor.getChangeHistoryManager()
                 .getChangeItemsForField(issue, CUST_FIELD);
         int lengthAssignee = itemBeans.size();
-        countAssignee = lengthAssignee;
-        String assignee = String.valueOf(countAssignee);
+        String assignee = String.valueOf(lengthAssignee);
         return assignee;
     }
 }
