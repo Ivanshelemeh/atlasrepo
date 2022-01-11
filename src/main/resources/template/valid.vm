@@ -1,0 +1,4 @@
+<div>
+    #set($error=$i18n.getText("second-custom-field.name.text"))
+    <h1>$error</h1>
+</div>
