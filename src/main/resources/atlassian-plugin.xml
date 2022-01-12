@@ -60,13 +60,14 @@
                       class="com.atlassian.shele.shelePlugin.customfield.SimpleCustomField">
         <description key="simple-custom-field.description"/>
         <resource type="velocity" name="edit" location="/template/edit.vm"/>
-        <resource type="velocity" name="view" location="/template/custom.vm"/>
+        <resource type="velocity" name="view" location="/template/view.vm"/>
     </customfield-type>
-    <customfield-type key="second-custom-field" name="Second custom field" i18n-name-key="second-custom-field.name"
-    class="com.atlassian.shele.shelePlugin.customfield.SecondCustomField">
-            <description key="second-custom-field.description"/>
-    <resource type="velocity" name="edit" location="/template/second-custom-field/edit.vm"/>
-        <resource type="velocity" name="view" location="/template/second-custom-field/view.vm"/>
+    <customfield-type key="count-assignee-field" name="Count assignee custom  field" i18n-name-key="count-assignee-field.name"
+    class="com.atlassian.shele.shelePlugin.customfield.CountAssigneeField">
+            <description key="count-assignee-field.description"/>
+    <resource type="velocity" name="edit" location="/template/count-assignee-field/edit.vm"/>
+        <resource type="velocity" name="view" location="/template/count-assignee-field/view.vm"/>
+        <resource type="velocity" name="column-view" location="/template/count-assignee-field/view-count-assignee.vm"/>
     </customfield-type>
     <listener key="IssueEvent" class="com.atlassian.shele.shelePlugin.liseners.IssueEventListener">
         <description>Will listen issue events</description>

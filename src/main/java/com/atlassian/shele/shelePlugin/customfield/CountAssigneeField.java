@@ -17,23 +17,47 @@ import java.util.Map;
 
 import static com.atlassian.shele.shelePlugin.utilit.Utilities.CUST_FIELD;
 
-public class SecondCustomField extends GenericTextCFType {
+/**
+ * This custom field displays count of changing assignee
+ * in current issue
+ */
+public class CountAssigneeField extends GenericTextCFType {
 
-    public SecondCustomField(@ComponentImport CustomFieldValuePersister customFieldValuePersister,
-                             @ComponentImport GenericConfigManager genericConfigManager) {
+    public CountAssigneeField(@ComponentImport CustomFieldValuePersister customFieldValuePersister,
+                              @ComponentImport GenericConfigManager genericConfigManager) {
         super(customFieldValuePersister, genericConfigManager);
     }
 
+    /**
+     * Prepare template velocity for showing count of assignee
+     * just for issue reporter
+     *
+     * @param issue           current issue on project
+     * @param field           custom field object
+     * @param fieldLayoutItem for rendering field
+     * @return params template velocity
+     */
     @Nonnull
     @Override
     public Map<String, Object> getVelocityParameters(final Issue issue, final CustomField field,
                                                      final FieldLayoutItem fieldLayoutItem) {
         Map<String, Object> params = new HashMap<>();
-        String reportKey = issue.getReporter().getKey();
-        params.put("reportKey", reportKey);
+        if (issue == null || issue.getReporter() == null) {
+            return params;
+        }
+        String reporterKey = issue.getReporter().getKey();
+        params.put("reporterKey", reporterKey);
         return params;
     }
 
+    /**
+     * Calculate how many times , changed assignee
+     * in issue and show item on screen
+     *
+     * @param field custom field  object
+     * @param issue current issue on project
+     * @return assignee count
+     */
     @Override
     public String getValueFromIssue(final CustomField field, final Issue issue) {
         List<ChangeItemBean> itemBeans = ComponentAccessor.getChangeHistoryManager()

@@ -6,8 +6,9 @@ import com.atlassian.jira.issue.customfields.persistence.CustomFieldValuePersist
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 
 /**
- * SimpleCustomField module access for change item only
- * amin
+ * SimpleCustomField module for examining how create a customfield
+ * which should be shown only admin.
+ *
  */
 public class SimpleCustomField extends GenericTextCFType {
 
