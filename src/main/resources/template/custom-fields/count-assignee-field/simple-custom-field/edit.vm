@@ -7,9 +7,9 @@
     #if($value && ! $value.equals(" "))
         #set ($displayValue = ${value})
     #else
-        #set ($displayValue = 'Access only for admins')
+        #set ($displayValue = $i18n.getText("simple-custom-field.description"))
     #end
-<span title="This field is editable only for administrators">$!displayValue</span>
+<span  text = $i18n.getText("simple-custom-field.description")>$!displayValue</span>
 <input type="hidden"
        name="$customField.id"
        value="$!value"/>

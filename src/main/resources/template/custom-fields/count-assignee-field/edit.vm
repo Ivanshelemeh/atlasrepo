@@ -1,0 +1,8 @@
+#disable_html_escaping()
+#customControlHeader ($action $customField.id $customField.name $fieldLayoutItem.required $displayParameters $auiparams)
+#if($authcontext.loggedInUser.key.equals($reporterKey))
+<input class="text"  type="text" value="$value" readonly="readonly"/>
+#else
+<p>$i18n.getText("count-assignee-field.name.text")</p>
+#end
+#customControlFooter ($action $customField.id $fieldLayoutItem.fieldDescription $displayParameters $auiparams)
