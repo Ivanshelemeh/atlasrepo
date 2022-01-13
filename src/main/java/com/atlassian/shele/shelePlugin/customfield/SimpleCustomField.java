@@ -7,8 +7,7 @@ import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 
 /**
  * SimpleCustomField module for examining how create a customfield
- * which should be shown only admin.
- *
+ * which provide editable access only admin, but shown to everyone
  */
 public class SimpleCustomField extends GenericTextCFType {
 

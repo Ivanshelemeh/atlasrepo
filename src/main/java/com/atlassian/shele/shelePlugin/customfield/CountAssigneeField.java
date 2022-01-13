@@ -62,8 +62,6 @@ public class CountAssigneeField extends GenericTextCFType {
     public String getValueFromIssue(final CustomField field, final Issue issue) {
         List<ChangeItemBean> itemBeans = ComponentAccessor.getChangeHistoryManager()
                 .getChangeItemsForField(issue, CUST_FIELD);
-        int lengthAssignee = itemBeans.size();
-        String assignee = String.valueOf(lengthAssignee);
-        return assignee;
+        return String.valueOf(itemBeans.size());
     }
 }
