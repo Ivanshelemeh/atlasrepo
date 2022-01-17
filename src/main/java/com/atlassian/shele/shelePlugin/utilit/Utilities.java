@@ -12,4 +12,6 @@ public final class Utilities {
     public final static String ENT = "entity";
     public final static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     public final static String CUST_FIELD = "assignee";
+    public final static String FIELD_NAME = "mail text";
+    public final static String REGEX_EXP = "((?<!([A-Z0-9]{1,10})-?)[A-Z0-9]+-\\d+)";
 }

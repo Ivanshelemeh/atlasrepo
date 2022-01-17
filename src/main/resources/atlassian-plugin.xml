@@ -74,4 +74,7 @@
     <rest key="IssueRest" path="/rest-issue" version="1.0">
         <description>Provides hello world services.</description>
     </rest>
+    <message-handler i18n-name-key="mailhandler.name" key="mailHandler"
+                     class="com.atlassian.shele.shelePlugin.handlers.MailHandler"
+                     add-edit-url="/secure/admin/EditHandlerDetailsUsingParams!default.jspa" weight="0"/>
 </atlassian-plugin>
