@@ -6,6 +6,8 @@ import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.MutableIssue;
 import com.atlassian.jira.issue.attachment.CreateAttachmentParamsBean;
 import com.atlassian.jira.issue.fields.CustomField;
+import com.atlassian.jira.issue.fields.FieldException;
+import com.atlassian.jira.issue.history.ChangeItemBean;
 import com.atlassian.jira.service.util.handler.MessageHandler;
 import com.atlassian.jira.service.util.handler.MessageHandlerContext;
 import com.atlassian.jira.service.util.handler.MessageHandlerErrorCollector;
@@ -42,6 +44,22 @@ public class MailHandler implements MessageHandler {
     }
 
     @SneakyThrows
+    private void makeAttachment(Message message, Issue issue, ApplicationUser user) {
+        MailUtils.Attachment[] attachments = MailUtils.getAttachments(message);
+        for (MailUtils.Attachment attachment : attachments) {
+            File file = File.createTempFile(attachment.getFilename(), message.getDisposition());
+            Files.write(attachment.getContents(), file);
+            ChangeItemBean cib = ComponentAccessor.getAttachmentManager().createAttachment(
+                    new CreateAttachmentParamsBean.Builder(
+                            file, attachment.getFilename(), attachment.getContentType(), user, issue
+                    ).build());
+            if (cib == null) {
+                throw new FieldException("attachment is empty");
+            }
+        }
+    }
+
+    @SneakyThrows
     @Override
     public boolean handleMessage(Message msg, MessageHandlerContext context)
             throws MessagingException {
@@ -50,20 +68,11 @@ public class MailHandler implements MessageHandler {
         Pattern pattern = Pattern.compile(REGEX_EXP);
         Matcher matcher = pattern.matcher(inputParameter);
         if (matcher.find()) {
-            String matchKey = matcher.group(inputParameter);
+            String matchKey = matcher.group(0);
             MutableIssue upDatedIssue = ComponentAccessor.getIssueManager().getIssueObject(matchKey);
             CustomField CFTextField = customFieldManager.getCustomFieldObject(10500L);
             upDatedIssue.setCustomFieldValue(CFTextField, MailUtils.getBody(msg));
-            MailUtils.Attachment[] attachments = MailUtils.getAttachments(msg);
-            for (MailUtils.Attachment attachment : attachments) {
-                File outFile = File.createTempFile(attachment.getFilename(), attachment.getContentType());
-                Files.write(attachment.getContents(), outFile);
-                ComponentAccessor.getAttachmentManager().createAttachment(new CreateAttachmentParamsBean.Builder(
-                        outFile, attachment.getFilename(),
-                        attachment.getContentType(), processor.getAuthorFromSender(msg),
-                        upDatedIssue
-                ).build());
-            }
+            makeAttachment(msg, upDatedIssue, processor.getAuthorFromSender(msg));
 
         } else {
             ApplicationUser sender = processor.getAuthorFromSender(msg);
@@ -71,7 +80,6 @@ public class MailHandler implements MessageHandler {
                 sender = ComponentAccessor.getUserManager().getUserByKey("admin");
             }
             MutableIssue mutableIssue = ComponentAccessor.getIssueFactory().getIssue();
-
             mutableIssue.setSummary(msg.getSubject());
             CustomField cfMailText = customFieldManager.getCustomFieldObject(10500L);
             mutableIssue.setCustomFieldValue(cfMailText, MailUtils.getBody(msg));
@@ -80,19 +88,11 @@ public class MailHandler implements MessageHandler {
                     .getProjectObj(10000L)).getIssueTypes().stream().findFirst().orElse(null));
             mutableIssue.setPriorityId("High");
             Issue newIssue = context.createIssue(sender, mutableIssue);
-
-            //TODO refactor method from if statment
-            MailUtils.Attachment[] attachments = MailUtils.getAttachments(msg);
-            for (MailUtils.Attachment attachment : attachments) {
-                File file = File.createTempFile("file", "jpg");
-                Files.write(attachment.getContents(), file);
-                ComponentAccessor.getAttachmentManager().createAttachment(new CreateAttachmentParamsBean.Builder(
-                        file, attachment.getFilename(), attachment.getContentType(), sender, newIssue
-                ).build());
-            }
+            makeAttachment(msg, newIssue, sender);
             return true;
         }
         return true;
     }
 }
+
 
