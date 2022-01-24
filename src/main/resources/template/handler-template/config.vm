@@ -1,0 +1,82 @@
+#* @vtlvariable name="action" type="com.atlassian.shele.shelePlugin.webwork.MailConfigDetailsWebAction" *#
+#set($context=$action.servletContext)
+#set ($modifierKey = $action.browserUtils.getModifierKey())
+#set ($submitAccessKey = $i18n.getText('AUI.form.submit.button.accesskey'))
+#set ($submitTitle = $i18n.getText('AUI.form.submit.button.tooltip', [$submitAccessKey, $modifierKey]))
+<html>
+<head>
+    <title>$action.handlerName</title>
+</head>
+<body>
+<div>
+    <form class="aui" action="MailConfigDetailsWebAction.jspa" method="POST" name="mailHandlerForm"
+          id="mailHandlerForm">
+        <div>
+            <aui-label for="projectId">$i18n.getText("mailHandler.name.select")</aui-label>
+            <p>
+                <aui-select
+                        id="projectId"
+                        name="projectId"
+                        placeholder="Select a project"
+                >
+                    #foreach($project in $context.getAttribute("projects"))
+                        #if($project)
+                            $project
+                            <aui-option value="$project.getId()">$project.getKey()</aui-option>
+                        #end
+                    #end
+                </aui-select>
+            </p>
+            <div>
+                <aui-label for="CFieldId">$i18n.getText("mailHandler.name.CF.select")</aui-label>
+                <p>
+                    <aui-select
+                            id="CFieldId"
+                            name="CFieldId"
+                            placeholder="Select a custom field"
+                    >
+                        #foreach($cf in $context.getAttribute("custom_fields"))
+                            #if($cf)
+                                $cf
+                                <aui-option value="$cf.getIdAsLong()">$cf.getFieldName()</aui-option>
+                            #end
+                        #end
+                    </aui-select>
+                </p>
+            </div>
+            <input type="hidden" name="atl_token" value="$atl_token">
+            <div>
+                <aui-label for="userKey">$i18n.getText("mailHandler.name.check.user")</aui-label>
+                <p>
+                    <aui-select
+                            id="userKey"
+                            name="userKey"
+                            placeholder="Select a Jira user"
+                    >
+                        #foreach($user in $context.getAttribute("users"))
+                            #if($user)
+                                <aui-option value="$user.getKey()">$user.getName()</aui-option>
+                            #end
+                        #end
+                    </aui-select>
+                </p>
+            </div>
+        </div>
+        <div class="bt-example">
+            <div class="buttons">
+                #if($action.editing)
+                    #set($buttonlabel=$i18n.getText("mail-handler.button.label"))
+                #else
+                    #set($buttonlabel=$i18n.getText("mail-handler.refused"))
+                #end
+                <button class="aui-button aui-button-primary" id="button" type="submit" value="$buttonlabel"
+                        accesskey="$submitAccessKey"
+                        title="$submitTitle"
+                >$i18n.getText("mail-handler.button")</button>
+                <a href="IncomingMailServers.jspa" class="cancel">$i18n.getText("mail-handler.cancel")</a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

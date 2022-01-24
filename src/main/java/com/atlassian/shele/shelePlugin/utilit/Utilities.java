@@ -14,4 +14,14 @@ public final class Utilities {
     public final static String CUST_FIELD = "assignee";
     public final static String FIELD_NAME = "mail text";
     public final static String REGEX_EXP = "((?<!([A-Z0-9]{1,10})-?)[A-Z0-9]+-\\d+)";
+    public final static String CONFIG_HANDLER = "input";
+    public final static String FILTER_CF = "com.atlassian.jira.plugin.system.customfieldtypes:textarea";
+    public final static String PROJECT_ID = "projectId";
+    public final static String USER_KEY = "userKey";
+    public final static String CUSTOM_FIELD_ID = "CFieldId";
+    public final static String PRIORITY = "High";
+    public final static String ERROR_PAGE = "securitybreach";
+    public final static String PROJECTS = "projects";
+    public final static String CUSTOM_FIELDS = "custom_fields";
+    public final static String APP_USERS = "users";
 }
