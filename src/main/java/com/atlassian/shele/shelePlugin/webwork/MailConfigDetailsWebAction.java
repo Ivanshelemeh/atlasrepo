@@ -3,6 +3,7 @@ package com.atlassian.shele.shelePlugin.webwork;
 import com.atlassian.configurable.ObjectConfigurationException;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.issue.fields.CustomField;
+import com.atlassian.jira.issue.issuetype.IssueType;
 import com.atlassian.jira.plugins.mail.webwork.AbstractEditHandlerDetailsWebAction;
 import com.atlassian.jira.project.Project;
 import com.atlassian.jira.service.JiraServiceContainer;
@@ -12,6 +13,7 @@ import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.plugin.PluginAccessor;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.google.common.collect.ImmutableMap;
+import lombok.SneakyThrows;
 
 import javax.inject.Inject;
 import java.util.Collection;
@@ -29,9 +31,30 @@ import static com.atlassian.shele.shelePlugin.utilit.Utilities.*;
  */
 public class MailConfigDetailsWebAction extends AbstractEditHandlerDetailsWebAction {
 
+
     private Long projectId;
-    private String userKey;
-    private Long CFieldId;
+    private String userName;
+
+
+    public void setIssueTypeId(Long issueTypeId) {
+        this.issueTypeId= issueTypeId;
+    }
+
+    public Long getIssueTypeId() {
+        return issueTypeId;
+    }
+
+    private Long issueTypeId;
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
+    }
+
+    private List<Project> projects;
 
     public Long getProjectId() {
         return projectId;
@@ -41,21 +64,23 @@ public class MailConfigDetailsWebAction extends AbstractEditHandlerDetailsWebAct
         this.projectId = projectId;
     }
 
-    public String getUserKey() {
-        return userKey;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUserKey(String userKey) {
-        this.userKey = userKey;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public Long getCFieldId() {
-        return CFieldId;
+    public Long getCustomFieldId() {
+        return customFieldId;
     }
 
-    public void setCFieldId(Long CFieldId) {
-        this.CFieldId = CFieldId;
+    public void setCustomFieldId(Long customFieldId) {
+        this.customFieldId = customFieldId;
     }
+
+    private Long customFieldId;
 
     @Inject
     public MailConfigDetailsWebAction(@ComponentImport PluginAccessor pluginAccessor) {
@@ -73,16 +98,20 @@ public class MailConfigDetailsWebAction extends AbstractEditHandlerDetailsWebAct
     protected void copyServiceSettings(JiraServiceContainer jiraServiceContainer) throws ObjectConfigurationException {
         final Map<String, String> params = ServiceUtils.getParameterMap(jiraServiceContainer.
                 getProperty(AbstractMessageHandlingService.KEY_HANDLER_PARAMS));
-        if (params.get(PROJECT_ID) != null) {
-            projectId = Long.valueOf(params.get(PROJECT_ID));
-        }
         if (params.get(USER_KEY) != null) {
-            userKey = params.get(USER_KEY);
+            userName = params.get(USER_KEY);
         }
         if (params.get(CUSTOM_FIELD_ID) != null) {
-            CFieldId = Long.valueOf(params.get(CUSTOM_FIELD_ID));
+            customFieldId= Long.valueOf(params.get(CUSTOM_FIELD_ID));
+        }
+        if (params.get(ISSUE_TYPE)!= null){
+            issueTypeId = Long.valueOf(params.get(ISSUE_TYPE));
+        }
+        if (params.get(PROJECT_ID)!= null){
+            projectId = Long.valueOf(params.get(PROJECT_ID));
         }
     }
+
 
     /**
      * Put meanings from ui to map
@@ -91,11 +120,12 @@ public class MailConfigDetailsWebAction extends AbstractEditHandlerDetailsWebAct
      * V - it is a variable in current config
      */
     @Override
-    protected Map<String, String> getHandlerParams() {
+    protected  Map<String, String> getHandlerParams(){
         return ImmutableMap.<String, String>builder()
+                .put(USER_KEY, userName)
+                .put(CUSTOM_FIELD_ID, customFieldId.toString())
+                .put(ISSUE_TYPE,issueTypeId.toString())
                 .put(PROJECT_ID, projectId.toString())
-                .put(USER_KEY, userKey)
-                .put(CUSTOM_FIELD_ID, CFieldId.toString())
                 .build();
     }
 
@@ -115,7 +145,9 @@ public class MailConfigDetailsWebAction extends AbstractEditHandlerDetailsWebAct
                         .equals(FILTER_CF))
                 .collect(Collectors.toList());
         Collection<ApplicationUser> applicationUsers = ComponentAccessor.getUserManager().getUsers();
+        Collection<IssueType> issueTypes = ComponentAccessor.getIssueTypeSchemeManager().getIssueTypesForProject(projects.get(0));
         if (!projects.isEmpty() && !customFields.isEmpty() && !applicationUsers.isEmpty()) {
+            this.getServletContext().setAttribute("type", issueTypes);
             this.getServletContext().setAttribute(PROJECTS, projects);
             this.getServletContext().setAttribute(CUSTOM_FIELDS, customFields);
             this.getServletContext().setAttribute(APP_USERS, applicationUsers);
@@ -124,13 +156,12 @@ public class MailConfigDetailsWebAction extends AbstractEditHandlerDetailsWebAct
         return ERROR_PAGE;
     }
 
-    /**
-     * This is for validation our properties
-     */
+    @SneakyThrows
     @Override
     protected void doValidation() {
-        if (configuration == null)
-            return;
+        if (projectId == null  || userName == null){
+            super.addErrorMessage("Invalid parameters");
+        }
         super.doValidation();
     }
 }

@@ -1,5 +1,5 @@
-#* @vtlvariable name="action" type="com.atlassian.shele.shelePlugin.webwork.MailConfigDetailsWebAction" *#
-#set($context=$action.servletContext)
+#* @vtlvariable name ="action" type ="com.atlassian.shele.shelePlugin.webwork.MailConfigDetailsWebAction" *#
+#set($context = $action.servletContext)
 #set ($modifierKey = $action.browserUtils.getModifierKey())
 #set ($submitAccessKey = $i18n.getText('AUI.form.submit.button.accesskey'))
 #set ($submitTitle = $i18n.getText('AUI.form.submit.button.tooltip', [$submitAccessKey, $modifierKey]))
@@ -28,11 +28,11 @@
                 </aui-select>
             </p>
             <div>
-                <aui-label for="CFieldId">$i18n.getText("mailHandler.name.CF.select")</aui-label>
+                <aui-label for="customFieldId">$i18n.getText("mailHandler.name.CF.select")</aui-label>
                 <p>
                     <aui-select
-                            id="CFieldId"
-                            name="CFieldId"
+                            id="customFieldId"
+                            name="customFieldId"
                             placeholder="Select a custom field"
                     >
                         #foreach($cf in $context.getAttribute("custom_fields"))
@@ -46,16 +46,34 @@
             </div>
             <input type="hidden" name="atl_token" value="$atl_token">
             <div>
-                <aui-label for="userKey">$i18n.getText("mailHandler.name.check.user")</aui-label>
+                <aui-label for="userName">$i18n.getText("mailHandler.name.check.user")</aui-label>
                 <p>
                     <aui-select
-                            id="userKey"
-                            name="userKey"
+                            id="userName"
+                            name="userName"
                             placeholder="Select a Jira user"
                     >
                         #foreach($user in $context.getAttribute("users"))
                             #if($user)
                                 <aui-option value="$user.getKey()">$user.getName()</aui-option>
+                            #end
+                        #end
+                    </aui-select>
+                </p>
+            </div>
+        </div>
+        <div>
+            <div>
+                <aui-label for="issueTypeId">IssueType selector</aui-label>
+                <p>
+                    <aui-select
+                            id="issueTypeId"
+                            name="issueTypeId"
+                            placeholder="Select IssueType"
+                    >
+                        #foreach($type in $context.getAttribute("type"))
+                            #if($type)
+                                <aui-option value="$type.getId()">$type.getName()</aui-option>
                             #end
                         #end
                     </aui-select>

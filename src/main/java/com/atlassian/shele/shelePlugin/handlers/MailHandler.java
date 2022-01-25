@@ -6,7 +6,6 @@ import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.MutableIssue;
 import com.atlassian.jira.issue.attachment.CreateAttachmentParamsBean;
 import com.atlassian.jira.issue.fields.CustomField;
-import com.atlassian.jira.issue.fields.FieldException;
 import com.atlassian.jira.issue.history.ChangeItemBean;
 import com.atlassian.jira.project.Project;
 import com.atlassian.jira.service.util.handler.MessageHandler;
@@ -25,7 +24,6 @@ import java.io.File;
 import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static com.atlassian.shele.shelePlugin.utilit.Utilities.*;
 
@@ -38,10 +36,9 @@ public class MailHandler implements MessageHandler {
 
     private final CustomFieldManager customFieldManager;
     private final MessageUserProcessor processor;
-    private String messageTitle;
     public Long projectId;
-    public String userKey;
-    public Long CFieldId;
+    public String userName;
+    public Long customFieldId;
 
     public MailHandler(@ComponentImport CustomFieldManager customFieldManager,
                        @ComponentImport MessageUserProcessor processor) {
@@ -61,10 +58,10 @@ public class MailHandler implements MessageHandler {
             projectId = Long.valueOf(params.get(PROJECT_ID));
         }
         if (params.containsKey(USER_KEY)) {
-            userKey = params.get(USER_KEY);
+            userName = params.get(USER_KEY);
         }
         if (params.containsKey(CUSTOM_FIELD_ID)) {
-            CFieldId = Long.valueOf(params.get(CUSTOM_FIELD_ID));
+            customFieldId = Long.valueOf(params.get(CUSTOM_FIELD_ID));
         }
     }
 
@@ -85,9 +82,6 @@ public class MailHandler implements MessageHandler {
                     new CreateAttachmentParamsBean.Builder(
                             file, attachment.getFilename(), attachment.getContentType(), user, issue
                     ).build());
-            if (changeItemBean == null) {
-                throw new FieldException("attachment is empty");
-            }
         }
     }
 
@@ -109,35 +103,36 @@ public class MailHandler implements MessageHandler {
     public boolean handleMessage(Message msg, MessageHandlerContext context)
             throws MessagingException {
 
-        messageTitle = msg.getSubject();
+        String messageTitle = msg.getSubject();
         if (messageTitle == null) {
             return true;
         }
-        Pattern pattern = Pattern.compile(REGEX_EXP);
-        Matcher matcher = pattern.matcher(messageTitle);
+        Matcher matcher = PATTERN.matcher(messageTitle);
         if (matcher.find()) {
             String matchKey = matcher.group(0);
             MutableIssue updatedIssue = ComponentAccessor.getIssueManager().getIssueObject(matchKey);
-            CustomField CFTextField = customFieldManager.getCustomFieldObject(CFieldId);
-            updatedIssue.setCustomFieldValue(CFTextField, MailUtils.getBody(msg));
+            CustomField customField = customFieldManager.getCustomFieldObject(customFieldId);
+            updatedIssue.setCustomFieldValue(customField, MailUtils.getBody(msg));
             makeAttachment(msg, updatedIssue, processor.getAuthorFromSender(msg));
         } else {
             ApplicationUser sender = processor.getAuthorFromSender(msg);
             if (sender == null) {
-                sender = ComponentAccessor.getUserManager().getUserByKey(userKey);
+                sender = ComponentAccessor.getUserManager().getUserByKey(userName);
+            }
+            Project project = ComponentAccessor.getProjectManager().getProjectObj(projectId);
+            if (project == null){
+                return false;
             }
             MutableIssue newIssue = ComponentAccessor.getIssueFactory().getIssue();
             newIssue.setSummary(messageTitle);
-            CustomField CF = customFieldManager.getCustomFieldObject(CFieldId);
-            newIssue.setCustomFieldValue(CF, MailUtils.getBody(msg));
+            CustomField customField = customFieldManager.getCustomFieldObject(customFieldId);
+            newIssue.setCustomFieldValue(customField, MailUtils.getBody(msg));
             newIssue.setProjectId(projectId);
-            Project project = ComponentAccessor.getProjectManager().getProjectObj(projectId);
             newIssue.setIssueType(Objects.requireNonNull(project).getIssueTypes().stream().findFirst().orElse(null));
             newIssue.setPriorityId(PRIORITY);
             newIssue.setReporter(sender);
             Issue Issue = context.createIssue(sender, newIssue);
             makeAttachment(msg, Issue, sender);
-            return true;
         }
         return true;
     }
