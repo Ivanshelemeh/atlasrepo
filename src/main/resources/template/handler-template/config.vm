@@ -1,0 +1,108 @@
+#* @vtlvariable name ="action" type ="com.atlassian.shele.shelePlugin.webwork.MailConfigDetailsWebAction" *#
+#set($context = $action.servletContext)
+#set ($modifierKey = $action.browserUtils.getModifierKey())
+#set ($submitAccessKey = $i18n.getText('AUI.form.submit.button.accesskey'))
+#set ($submitTitle = $i18n.getText('AUI.form.submit.button.tooltip', [$submitAccessKey, $modifierKey]))
+<html>
+<head>
+    <title>$action.handlerName</title>
+</head>
+<body>
+<div>
+    <form class="aui" action="MailConfigDetailsWebAction.jspa" method="POST" name="mailHandlerForm"
+          id="mailHandlerForm">
+        <div>
+            <label for="projectId">$i18n.getText("mailHandler.name.select")</label>
+            <select id="projectId" name="projectId" class="multi-select">
+                #foreach($project in $context.getAttribute("projects"))
+                    #if($project)
+                        $project
+                        <option id="pr_id" value="$project.getKey()">$project.getKey()</option>
+                    #end
+                #end
+            </select>
+        </div>
+        <div id="is_id">
+            <label for="issueType"> Choose issue type</label>
+        <select id="issueTypeId" name="issueTypeId" class="multi-select" multiple="multiple">
+
+                </select>
+        </div>
+        <div id="cf_field" style="padding: 15px">
+            <aui-label for="customFieldId">$i18n.getText("mailHandler.name.CF.select")</aui-label>
+            <p>
+                <aui-select
+                        id="customFieldId"
+                        name="customFieldId"
+                        placeholder="Select a custom field"
+                >
+                    #foreach($cf in $context.getAttribute("custom_fields"))
+                        #if($cf)
+                            $cf
+                            <aui-option value="$cf.getIdAsLong()">$cf.getFieldName()</aui-option>
+                        #end
+                    #end
+                </aui-select>
+            </p>
+        </div>
+        <input type="hidden" name="atl_token" value="$atl_token">
+        <div id="user_id" style="padding: 12px">
+            <aui-label for="userName" style="padding: 5px">$i18n.getText("mailHandler.name.check.user")</aui-label>
+            <p>
+                <aui-select id="userName"
+                            name="userName"
+                            placeholder="Select a Jira user">
+                    #foreach($user in $context.getAttribute("users"))
+                        #if($user)
+                            <aui-option value="$user.getKey()">$user.getName()</aui-option>
+                        #end
+                    #end
+                </aui-select>
+            </p>
+        </div>
+        <div>
+        </div>
+        <div class="bt-example">
+            <div class="buttons">
+                #if($action.editing)
+                    #set($buttonlabel=$i18n.getText("mail-handler.button.label"))
+                #else
+                    #set($buttonlabel=$i18n.getText("mail-handler.refused"))
+                #end
+                <button class="aui-button aui-button-primary" id="button" type="submit" value="$buttonlabel"
+                        accesskey="$submitAccessKey"
+                        title="$submitTitle"
+                >$i18n.getText("mail-handler.button")</button>
+                <a href="IncomingMailServers.jspa" class="cancel">$i18n.getText("mail-handler.cancel")</a>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    AJS.$('#issueTypeId').auiSelect2();
+    AJS.$('#projectId').auiSelect2();
+
+    let prod = $('#pr_id').val();
+
+    var select = jQuery.ajax({
+        method: 'GET',
+        contentType: 'application/json;charset=utf-8',
+        url: AJS.contextPath() + "/rest/rest-issue/1.0/issue/key?projectKey=" + prod,
+        dataType: "json",
+        success: function (data) {
+            let val = data;
+            for (let i = 0; i < val.length; i++) {
+                let opt = val[i];
+
+                let el = document.createElement("option");
+                el.setAttribute("value", opt.valueOf());
+                el.appendChild(document.createTextNode(opt));
+                let sel = document.getElementById("issueTypeId");
+                sel.appendChild(el);
+            }
+        }
+    });
+
+</script>
+</body>
+</html>

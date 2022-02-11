@@ -14,6 +14,9 @@
     <!-- add our web resources -->
     <web-resource key="shelePlugin-resources" name="shelePlugin Web Resources">
         <dependency>com.atlassian.auiplugin:ajs</dependency>
+        <dependency>com.atlassian.auiplugin:aui-select</dependency>
+        <dependency>com.atlassian.auiplugin:aui-dialog2</dependency>
+        <dependency>com.atlassian.auiplugin:aui-select2</dependency>
 
         <resource type="download" name="shelePlugin.css" location="/css/shelePlugin.css"/>
         <resource type="download" name="shelePlugin.js" location="/js/shelePlugin.js"/>
@@ -51,6 +54,16 @@
             </action>
         </actions>
     </webwork1>
+    <webwork1 key="mail-edit-webwork" name="Mail Edit Webwork" class="java.lang.Object" roles-required="sysadmin">
+        <description key="mail-edit-webwork.description">Web work for configuration mail handler</description>
+        <actions>
+            <action name="com.atlassian.shele.shelePlugin.webwork.MailConfigDetailsWebAction"
+                    alias="MailConfigDetailsWebAction" roles-required="sysadmin">
+                <view name="input">/template/handler-template/config.vm</view>
+                <view name="securitybreach">/secure/views/securitybreach.jsp</view>
+            </action>
+        </actions>
+    </webwork1>
     <ao key="ao-module">
         <description>The module configuring the Active Objects service</description>
         <entity>com.atlassian.shele.shelePlugin.ao.IssueEntity</entity>
@@ -62,10 +75,11 @@
         <resource type="velocity" name="edit" location="/template/custom-fields/simple-custom-field/edit.vm"/>
         <resource type="velocity" name="view" location="/template/custom-fields/simple-custom-field/view.vm"/>
     </customfield-type>
-    <customfield-type key="count-assignee-field" name="Count assignee custom  field" i18n-name-key="count-assignee-field.name"
-    class="com.atlassian.shele.shelePlugin.customfield.CountAssigneeField">
-            <description key="count-assignee-field.description"/>
-    <resource type="velocity" name="edit" location="/template/custom-fields/count-assignee-field/edit.vm"/>
+    <customfield-type key="count-assignee-field" name="Count assignee custom  field"
+                      i18n-name-key="count-assignee-field.name"
+                      class="com.atlassian.shele.shelePlugin.customfield.CountAssigneeField">
+        <description key="count-assignee-field.description"/>
+        <resource type="velocity" name="edit" location="/template/custom-fields/count-assignee-field/edit.vm"/>
         <resource type="velocity" name="view" location="/template/custom-fields/count-assignee-field/view.vm"/>
     </customfield-type>
     <listener key="IssueEvent" class="com.atlassian.shele.shelePlugin.liseners.IssueEventListener">
@@ -74,4 +88,7 @@
     <rest key="IssueRest" path="/rest-issue" version="1.0">
         <description>Provides hello world services.</description>
     </rest>
+    <message-handler i18n-name-key="mailHandler.name" key="mailHandler"
+                     class="com.atlassian.shele.shelePlugin.handlers.MailHandler"
+                     add-edit-url="/secure/admin/MailConfigDetailsWebAction!default.jspa" weight="0"/>
 </atlassian-plugin>
