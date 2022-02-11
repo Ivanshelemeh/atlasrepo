@@ -3,7 +3,6 @@ package com.atlassian.shele.shelePlugin.webwork;
 import com.atlassian.configurable.ObjectConfigurationException;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.issue.fields.CustomField;
-import com.atlassian.jira.issue.issuetype.IssueType;
 import com.atlassian.jira.plugins.mail.webwork.AbstractEditHandlerDetailsWebAction;
 import com.atlassian.jira.project.Project;
 import com.atlassian.jira.service.JiraServiceContainer;
@@ -31,9 +30,18 @@ import static com.atlassian.shele.shelePlugin.utilit.Utilities.*;
  */
 public class MailConfigDetailsWebAction extends AbstractEditHandlerDetailsWebAction {
 
+    public String getProjectId() {
+        return projectId;
+    }
 
-    private Long projectId;
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
+    }
+
+    private String projectId;
     private String userName;
+    private Long customFieldId;
+    private Long issueTypeId;
 
 
     public void setIssueTypeId(Long issueTypeId) {
@@ -42,26 +50,6 @@ public class MailConfigDetailsWebAction extends AbstractEditHandlerDetailsWebAct
 
     public Long getIssueTypeId() {
         return issueTypeId;
-    }
-
-    private Long issueTypeId;
-
-    public List<Project> getProjects() {
-        return projects;
-    }
-
-    public void setProjects(List<Project> projects) {
-        this.projects = projects;
-    }
-
-    private List<Project> projects;
-
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
     }
 
     public String getUserName() {
@@ -79,8 +67,6 @@ public class MailConfigDetailsWebAction extends AbstractEditHandlerDetailsWebAct
     public void setCustomFieldId(Long customFieldId) {
         this.customFieldId = customFieldId;
     }
-
-    private Long customFieldId;
 
     @Inject
     public MailConfigDetailsWebAction(@ComponentImport PluginAccessor pluginAccessor) {
@@ -108,10 +94,9 @@ public class MailConfigDetailsWebAction extends AbstractEditHandlerDetailsWebAct
             issueTypeId = Long.valueOf(params.get(ISSUE_TYPE));
         }
         if (params.get(PROJECT_ID)!= null){
-            projectId = Long.valueOf(params.get(PROJECT_ID));
+            projectId =params.get(PROJECT_ID);
         }
     }
-
 
     /**
      * Put meanings from ui to map
@@ -124,8 +109,8 @@ public class MailConfigDetailsWebAction extends AbstractEditHandlerDetailsWebAct
         return ImmutableMap.<String, String>builder()
                 .put(USER_KEY, userName)
                 .put(CUSTOM_FIELD_ID, customFieldId.toString())
-                .put(ISSUE_TYPE,issueTypeId.toString())
-                .put(PROJECT_ID, projectId.toString())
+                .put(PROJECT_KEY, projectId)
+                .put(ISSUE_TYPE_KEY, issueTypeId.toString())
                 .build();
     }
 
@@ -145,9 +130,9 @@ public class MailConfigDetailsWebAction extends AbstractEditHandlerDetailsWebAct
                         .equals(FILTER_CF))
                 .collect(Collectors.toList());
         Collection<ApplicationUser> applicationUsers = ComponentAccessor.getUserManager().getUsers();
-        Collection<IssueType> issueTypes = ComponentAccessor.getIssueTypeSchemeManager().getIssueTypesForProject(projects.get(0));
+      //  Collection<IssueType> issueTypes = ComponentAccessor.getIssueTypeSchemeManager().getIssueTypesForProject(projects.get(0));
         if (!projects.isEmpty() && !customFields.isEmpty() && !applicationUsers.isEmpty()) {
-            this.getServletContext().setAttribute("type", issueTypes);
+           // this.getServletContext().setAttribute("type", issueTypes);
             this.getServletContext().setAttribute(PROJECTS, projects);
             this.getServletContext().setAttribute(CUSTOM_FIELDS, customFields);
             this.getServletContext().setAttribute(APP_USERS, applicationUsers);
@@ -159,7 +144,7 @@ public class MailConfigDetailsWebAction extends AbstractEditHandlerDetailsWebAct
     @SneakyThrows
     @Override
     protected void doValidation() {
-        if (projectId == null  || userName == null){
+        if (projectId == null || userName == null){
             super.addErrorMessage("Invalid parameters");
         }
         super.doValidation();

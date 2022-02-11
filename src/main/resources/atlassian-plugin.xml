@@ -16,6 +16,7 @@
         <dependency>com.atlassian.auiplugin:ajs</dependency>
         <dependency>com.atlassian.auiplugin:aui-select</dependency>
         <dependency>com.atlassian.auiplugin:aui-dialog2</dependency>
+        <dependency>com.atlassian.auiplugin:aui-select2</dependency>
 
         <resource type="download" name="shelePlugin.css" location="/css/shelePlugin.css"/>
         <resource type="download" name="shelePlugin.js" location="/js/shelePlugin.js"/>

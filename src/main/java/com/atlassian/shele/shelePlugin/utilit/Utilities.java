@@ -26,6 +26,8 @@ public final class Utilities {
     public final static String PROJECTS = "projects";
     public final static String CUSTOM_FIELDS = "custom_fields";
     public final static String APP_USERS = "users";
-    public final static Pattern PATTERN= Pattern.compile(REGEX_EXP);
-    public final static String ISSUE_TYPE="issueTypeId";
+    public final static Pattern PATTERN = Pattern.compile(REGEX_EXP);
+    public final static String ISSUE_TYPE = "issueTypeId";
+    public final static String PROJECT_KEY = "project";
+    public final static String ISSUE_TYPE_KEY="issuetype";
 }
